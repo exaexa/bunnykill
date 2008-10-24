@@ -1,0 +1,29 @@
+
+
+Import('env')
+
+env['CPPPATH'].append('/usr/include/freetype2/')
+
+libs=Split("""exa-base.cpp
+	exa-camera.cpp
+	exa-console.cpp
+	exa-font.cpp
+	exa-particles.cpp
+	exa-socket.cpp
+	exa-sound.cpp
+	exa-thread.cpp
+	exa-image.cpp""")
+
+env.Program('flight',['flight.cpp','exa-base.cpp','exa-camera.cpp','exa-console.cpp', 'exa-font.cpp','exa-particles.cpp','exa-sound.cpp','exa-image.cpp'])
+env.Program('fonttest',['fonttest.cpp','exa-base.cpp','exa-console.cpp','exa-font.cpp','exa-sound.cpp'])
+env.Program('simplegame',['simplegame.cpp','exa-base.cpp','exa-console.cpp','exa-font.cpp','exa-particles.cpp','exa-sound.cpp'])
+env.Program('simplest',['simplest.cpp','exa-base.cpp'])
+env.Program('soundtest',['soundtest.cpp','exa-base.cpp','exa-sound.cpp'])
+env.Program('threads',['threads.cpp','exa-thread.cpp','exa-base.cpp'])
+env.Program('udp-cli',['udp-cli.cpp','exa-socket.cpp'])
+env.Program('udp-srv',['udp-srv.cpp','exa-socket.cpp','exa-base.cpp'])
+env.Program('oggplay',['oggplay.cpp','exa-sound.cpp','exa-base.cpp'])
+
+retval=env.Object(libs)
+
+Return('retval')
