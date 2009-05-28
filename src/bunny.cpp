@@ -2,6 +2,7 @@
 #include "game.h"
 #include "bunny.h"
 #include <math.h>
+#include <stdlib.h>
 #include "bunnydrawer.h"
 #include "blood.h"
 #include "common.h"

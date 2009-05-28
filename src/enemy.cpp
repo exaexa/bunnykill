@@ -5,6 +5,7 @@
 #include "enemy.h"
 #include "bunnydrawer.h"
 #include "common.h"
+#include <stdlib.h>
 
 
 static int enemy_val[] =

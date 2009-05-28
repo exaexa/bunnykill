@@ -3,6 +3,7 @@
 #include "blood.h"
 #include "exa-image.h"
 #include <GL/gl.h>
+#include <stdlib.h>
 #include <list>
 using std::list;
 #include "common.h"
