@@ -47,7 +47,7 @@ public:
 	void shutdown();
 
 	exaBuffer* createbuffer();
-	exaSample* createsample (exaBuffer* b = NULL);
+	exaSample* createsample (exaBuffer* b = 0);
 	exaStream* createstream();
 
 	void adoptsample (exaSample* s);
