@@ -91,9 +91,9 @@ void bkBunny::die()
 {
 	int i;
 	complex p = pos + complex (0, 0.0272);
-	for (i = 0;i < 10;++i) bkBloodAddMeat
+	for (i = 0;i < 50;++i) bkBloodAddMeat
 		(pos, complex (DFRAND, DFRAND) | (FRAND*FRAND) );
-	for (i = 0;i < 20;++i) bkBloodAddSplat
+	for (i = 0;i < 100;++i) bkBloodAddSplat
 		(pos, complex (0, 0.5) + 3*spd + complex (DFRAND, DFRAND) | (0.7*FRAND) );
 	dead = true;
 }
