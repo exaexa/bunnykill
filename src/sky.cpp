@@ -3,6 +3,7 @@
 #include "exa-image.h"
 #include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "common.h"
 
 bool bkSky::init()
