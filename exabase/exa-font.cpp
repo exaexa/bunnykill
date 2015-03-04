@@ -4,11 +4,11 @@
 #include <math.h>
 #include <string.h>
 #include <wchar.h>
-#include <freetype/config/ftheader.h>
-#include <freetype/freetype.h>
-#include <freetype/ftglyph.h>
-#include <freetype/ftoutln.h>
-#include <freetype/fttrigon.h>
+#include <freetype2/config/ftheader.h>
+#include <freetype2/freetype.h>
+#include <freetype2/ftglyph.h>
+#include <freetype2/ftoutln.h>
+#include <freetype2/fttrigon.h>
 
 #include <unistd.h>
 

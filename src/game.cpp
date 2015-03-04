@@ -154,8 +154,8 @@ void bkGame::shutdown()
 
 int main()
 {
-	game.screenx = 1024;
-	game.screeny = 768;
+	game.screenx = 1920;
+	game.screeny = 1080;
 	game.playername = getenv ("USER");
 	if (!game.init() ) return -1;
 	while (game.update() );
