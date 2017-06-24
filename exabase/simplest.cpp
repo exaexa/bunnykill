@@ -46,8 +46,8 @@ void render()
 	glTranslatef (0, 0, -10); //move 10 units forward
 	glRotatef (-30, 1, 0, 0); //tilt a little
 	glRotatef (rot, 0, 1, 0); //rotate tube
-	glRotatef (4*rot, 0, 0, 1); //roll the tube fast
-	for (i = 0;i < 360;i += 36) {
+	glRotatef (4 * rot, 0, 0, 1); //roll the tube fast
+	for (i = 0; i < 360; i += 36) {
 		glPushMatrix(); //save space position
 		glRotatef (i, 0, 0, 1);
 		glBegin (GL_LINES); //draw lines
@@ -65,18 +65,18 @@ int main()
 {
 	bool done = false;
 	exaSetParams (1024, 768, 32); //set your own
-	if (!exaInit() ) return -1;
+	if (!exaInit()) return -1;
 
 	initgl();
 	while (!done) {
 		exaUSleep (20);
 		exaUpdate();
 		//update cycle - wm and KB stuff
-		if (exaIsKeyDown (EKEY_ESCAPE) ) done = true;
+		if (exaIsKeyDown (EKEY_ESCAPE)) done = true;
 		//exit on escape
-		if (exaIsKeyDown (EKEY_TAB) ) exaIconifyWindow();
+		if (exaIsKeyDown (EKEY_TAB)) exaIconifyWindow();
 		//iconify=minimize
-		if (!exaIsIconified() ) render();
+		if (!exaIsIconified()) render();
 		//render only if it will be seen
 	}
 	exaShutdown();

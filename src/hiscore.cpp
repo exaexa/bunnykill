@@ -16,13 +16,11 @@ class score_entry
 public:
 	string name;
 	int score;
-	score_entry (string n, int s)
-	{
+	score_entry (string n, int s) {
 		name = n;
 		score = s;
 	}
-	bool operator< (const score_entry& se)
-	{
+	bool operator< (const score_entry& se) {
 		return score > se.score;
 	}
 };
@@ -44,16 +42,16 @@ void bkHSInit()
 	FILE*f;
 	f = fopen (SCOREFILE, "r");
 	if (f) {
-		while (!feof (f) ) {
+		while (!feof (f)) {
 			fscanf (f, "%d %200s\n", &sc_t, name_t);
-			scores.push_back (score_entry (name_t, sc_t) );
+			scores.push_back (score_entry (name_t, sc_t));
 		}
 		fclose (f);
 	}
 	scores.sort();
 	list<score_entry>::iterator i;
-	for (i = scores.begin();i != scores.end();++i)
-		printf ("%d>>%s\n", i->score, i->name.c_str() );
+	for (i = scores.begin(); i != scores.end(); ++i)
+		printf ("%d>>%s\n", i->score, i->name.c_str());
 }
 
 void bkHSSave()
@@ -61,8 +59,8 @@ void bkHSSave()
 	FILE*f = fopen (SCOREFILE, "w");
 	if (!f) return;
 	list<score_entry>::iterator i;
-	for (i = scores.begin();i != scores.end();++i)
-		fprintf (f, "%d %s\n", i->score, i->name.c_str() );
+	for (i = scores.begin(); i != scores.end(); ++i)
+		fprintf (f, "%d %s\n", i->score, i->name.c_str());
 	fclose (f);
 }
 

@@ -4,7 +4,7 @@
 
 void bkInput::init()
 {
-	for (int i = 0;i < _nkeys;++i)
+	for (int i = 0; i < _nkeys; ++i)
 		down[i] = hit[i] = false;
 }
 

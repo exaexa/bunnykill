@@ -88,7 +88,7 @@ void drawscene (float dtime)
 
 	glEnable (GL_TEXTURE_2D);
 	glBindTexture (GL_TEXTURE_2D, texture);
-	particlesys.draw (orientation (0, 0, -1, 0, 1, 0) );
+	particlesys.draw (orientation (0, 0, -1, 0, 1, 0));
 	glDisable (GL_TEXTURE_2D);
 
 
@@ -118,12 +118,10 @@ void drawscene (float dtime)
 bool processconsole()
 {
 	char cmd[256];
-	while (console.getnextcmd (cmd, 256, false) ) {
-		if (0 == strcmp (cmd, "quit") ) return false;
-		else
-			if (0 == strcmp (cmd, "fps_lock") ) lockfps = true;
-			else
-				if (0 == strcmp (cmd, "fps_unlock") ) lockfps = false;
+	while (console.getnextcmd (cmd, 256, false)) {
+		if (0 == strcmp (cmd, "quit")) return false;
+		else if (0 == strcmp (cmd, "fps_lock")) lockfps = true;
+		else if (0 == strcmp (cmd, "fps_unlock")) lockfps = false;
 	}
 	return true;
 }
@@ -136,14 +134,14 @@ bool processgamelogic (float time)
 	exaGetMouseMove (&mx, &my);
 	newrot.x += my * 0.01;
 	newrot.y -= mx * 0.01;
-	if (exaIsMouseButtonDown (3) ) newrot.z += 0.1;
-	if (exaIsMouseButtonDown (1) ) newrot.z -= 0.1;
-	if (exaIsKeyDown (EKEY_KP5) ) newrot.x += 0.1;
-	if (exaIsKeyDown (EKEY_KP8) ) newrot.x -= 0.1;
-	if (exaIsKeyDown (EKEY_KP4) ) newrot.y += 0.1;
-	if (exaIsKeyDown (EKEY_KP6) ) newrot.y -= 0.1;
-	if (exaIsKeyDown (EKEY_KP9) ) newrot.z += 0.1;
-	if (exaIsKeyDown (EKEY_KP7) ) newrot.z -= 0.1;
+	if (exaIsMouseButtonDown (3)) newrot.z += 0.1;
+	if (exaIsMouseButtonDown (1)) newrot.z -= 0.1;
+	if (exaIsKeyDown (EKEY_KP5)) newrot.x += 0.1;
+	if (exaIsKeyDown (EKEY_KP8)) newrot.x -= 0.1;
+	if (exaIsKeyDown (EKEY_KP4)) newrot.y += 0.1;
+	if (exaIsKeyDown (EKEY_KP6)) newrot.y -= 0.1;
+	if (exaIsKeyDown (EKEY_KP9)) newrot.z += 0.1;
+	if (exaIsKeyDown (EKEY_KP7)) newrot.z -= 0.1;
 	rot += ori.relate (newrot);
 	ori += rot * time;
 	rot *= powf (0.5f, time);
@@ -152,34 +150,34 @@ bool processgamelogic (float time)
 	spd *= powf (0.5f, time);
 	particlesys.update (time);
 	cometsys.update (time, &particlesys);
-	if (exaIsKeyDown (EKEY_SPACE) ) {
+	if (exaIsKeyDown (EKEY_SPACE)) {
 		particletime += time;
 		while (particletime > 0.01) {
-			particlesys.createparticle (pos, -4*ori.fw + vector (DFRAND, DFRAND, DFRAND), vector (0, 0.7, 0),
+			particlesys.createparticle (pos, -4 * ori.fw + vector (DFRAND, DFRAND, DFRAND), vector (0, 0.7, 0),
 			                            0.7f, 6, 0, 0.8f, 0.5f,
 			                            0.27, 0.27, 0.3);
-			particlesys.createparticle (pos, -ori.fw* (3 + FRAND), vector (0, 0, 0),
+			particlesys.createparticle (pos, -ori.fw * (3 + FRAND), vector (0, 0, 0),
 			                            0.3f, 0.5, 0, 0, 0.5f,
 			                            0.85, 0.28, 0.1);
 			particletime -= 0.01;
 		}
 	}
-	if (exaIsKeyHit (EKEY_z) )
-		cometsys.createcomet (pos + ori.fw*3, ori.fw*50, vector (0, 0, 0), 4, 0, 0,
+	if (exaIsKeyHit (EKEY_z))
+		cometsys.createcomet (pos + ori.fw * 3, ori.fw * 50, vector (0, 0, 0), 4, 0, 0,
 		                      0.005, 0.3, 1, 0.1, 0, 0.3, 0, 1, 1, 0.3, 0, 0.99, 0);
-	if (exaIsKeyHit (EKEY_x) )
-		cometsys.createcomet (pos + ori.fw*3, ori.fw*20, vector (0, -10, 0), 1, 0, 0,
+	if (exaIsKeyHit (EKEY_x))
+		cometsys.createcomet (pos + ori.fw * 3, ori.fw * 20, vector (0, -10, 0), 1, 0, 0,
 		                      0.05, 0.2, 0.5, 1, 0, 0.3, 0, 1, 1, 0.3, 0, 0.99, 0,
 		                      100, 1, 0.7, 0.2, 0, 0.75, 0, 0, 20, 0, 1, 0, 0.8, 0,
 		                      3, 1, 20, 0.5, 0.5, 1, 0);
 
-	if (exaIsKeyHit (EKEY_F3) ) {
+	if (exaIsKeyHit (EKEY_F3)) {
 		ori = orientation();
 		pos = vector (0, 0, -5);
 		spd *= 0;
 		rot *= 0;
 	}
-	if (exaIsKeyDown (EKEY_F2) ) {
+	if (exaIsKeyDown (EKEY_F2)) {
 		console.printf ("Orientation: fw(%f,%f,%f) up(%f,%f,%f)",
 		                ori.fw.x, ori.fw.y, ori.fw.z,
 		                ori.up.x, ori.up.y, ori.up.z);
@@ -232,7 +230,7 @@ int main (int argc, char**argv)
 	float fpstime = 0;
 	int nkeys, *keys;
 	exaSetParams (1280, 800, 24);
-	if (!exaInit() ) return -1;
+	if (!exaInit()) return -1;
 	font.loadfromfreetype ("consolefont.ttf");
 	//font.loadfromfiles("font2_bitmap.raw","font2_descriptor.raw",
 	//		128,2048,32);
@@ -241,8 +239,8 @@ int main (int argc, char**argv)
 	initgl();
 
 	exaSound.init();
-	exaSound.listenerpos (vector (0, 0, 0) );
-	exaSound.listenerori (vector (0, 0, -1), vector (0, 1, 0) );
+	exaSound.listenerpos (vector (0, 0, 0));
+	exaSound.listenerori (vector (0, 0, -1), vector (0, 1, 0));
 
 	exaKeyRepeat (0.4, 0.05);
 
@@ -259,20 +257,20 @@ int main (int argc, char**argv)
 			}
 		fpstime += dtime;
 		exaUpdate();
-		if (!exaIsIconified() ) {
+		if (!exaIsIconified()) {
 			quit = !processgamelogic (dtime);
 			drawscene (dtime);
 		}
 		quit |= !processconsole();
-		if (exaIsKeyHit (EKEY_F1) ) showconsole = !showconsole;
+		if (exaIsKeyHit (EKEY_F1)) showconsole = !showconsole;
 		if (showconsole) {
 			nkeys = exaGetKeyTypes (&keys);
-			for (--nkeys;nkeys >= 0;--nkeys) {
+			for (--nkeys; nkeys >= 0; --nkeys) {
 				console.EKEYinput (keys[nkeys]);
 				console.printf ("Keyhit %d", keys[nkeys]);
 			}
 		}
-		if (1000 < (timer++) ) {
+		if (1000 < (timer++)) {
 			exaSound.updateadopted();
 			timer = 0;
 			console.printf ("fps: %f", 1000 / fpstime);

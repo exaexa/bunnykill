@@ -28,64 +28,51 @@ class ipaddress: public exasockaddr_in
 public:
 	ipaddress()
 	{};
-	explicit ipaddress (const ipaddress& ipa)
-	{
-		memcpy (this, &ipa, sizeof (ipaddress) );
+	explicit ipaddress (const ipaddress& ipa) {
+		memcpy (this, &ipa, sizeof (ipaddress));
 	}
-	ipaddress (const exasockaddr& ipa)
-	{
-		memcpy (this, &ipa, sizeof (exasockaddr) );
+	ipaddress (const exasockaddr& ipa) {
+		memcpy (this, &ipa, sizeof (exasockaddr));
 	}
-	ipaddress (const exasockaddr_in& ipa)
-	{
-		memcpy (this, &ipa, sizeof (sockaddr_in) );
+	ipaddress (const exasockaddr_in& ipa) {
+		memcpy (this, &ipa, sizeof (sockaddr_in));
 	}
 	ipaddress (unsigned char a, unsigned char b, unsigned char c, unsigned char d, uint16_t port);
 	ipaddress (uint32_t a, uint16_t port);
-	const ipaddress& operator= (const ipaddress& ipa)
-	{
-		memcpy (this, &ipa, sizeof (ipaddress) );
+	const ipaddress& operator= (const ipaddress& ipa) {
+		memcpy (this, &ipa, sizeof (ipaddress));
 		return *this;
 	}
-	operator exasockaddr*()
-	{
+	operator exasockaddr*() {
 		return (exasockaddr*) this;
 	}
-	operator exasockaddr_in*()
-	{
+	operator exasockaddr_in*() {
 		return (exasockaddr_in*) this;
 	}
-	uint16_t getport()
-	{
+	uint16_t getport() {
 		return htons (sin_port);
 	}
-	void setport (uint16_t p)
-	{
+	void setport (uint16_t p) {
 		sin_port = htons (p);
 	}
-	uint32_t getaddr()
-	{
+	uint32_t getaddr() {
 		return htonl (sin_addr.s_addr);
 	}
-	void setaddr (uint32_t addr)
-	{
+	void setaddr (uint32_t addr) {
 		sin_addr.s_addr = htonl (addr);
 	}
-	void setaddr (unsigned char a, unsigned char b, unsigned char c, unsigned char d)
-	{
+	void setaddr (unsigned char a, unsigned char b, unsigned char c, unsigned char d) {
 		sin_addr.s_addr = htonl ( (a << 24) + (b << 16) + (c << 8) + d);
 	}
 
-	bool operator== (const ipaddress& ipa) const
-	{
+	bool operator== (const ipaddress& ipa) const {
 		if (sin_addr.s_addr == ipa.sin_addr.s_addr)
 			if (sin_port == ipa.sin_port)
 				return true;
 		return false;
 	}
 
-	bool operator< (const ipaddress& ipa) const
-	{
+	bool operator< (const ipaddress& ipa) const {
 		if (sin_addr.s_addr > ipa.sin_addr.s_addr) return false;
 		if (sin_addr.s_addr < ipa.sin_addr.s_addr) return true;
 		if (sin_port < ipa.sin_port) return true;
@@ -98,12 +85,10 @@ class EXASOCKETINIT
 public:
 #ifdef WIN32
 	WSADATA wd;
-	EXASOCKETINIT()
-	{
+	EXASOCKETINIT() {
 		WSAStartup (MAKEWORD (2, 0), &wd);
 	}
-	~EXASOCKETINIT()
-	{
+	~EXASOCKETINIT() {
 		WSACleanup();
 	}
 #endif
@@ -119,31 +104,25 @@ class exaSocket
 {
 public:
 	exasockt sock;
-	exaSocket()
-	{
+	exaSocket() {
 		sock = 0;
 	}
-	exaSocket (exasockt s)
-	{
+	exaSocket (exasockt s) {
 		sock = s;
 	}
-	~exaSocket()
-	{
+	~exaSocket() {
 		if (sock) close();
 	}
-	operator bool()
-	{
+	operator bool() {
 		return sock ? true : false;
 	}
-	operator int()
-	{
+	operator int() {
 		return sock;
 	}
 	bool create (int type);
 	bool close();
 	bool bind (ipaddress ipa);
-	inline bool bind (uint16_t port)
-	{
+	inline bool bind (uint16_t port) {
 		ipaddress i (0, port);
 		return bind (i);
 	}

@@ -12,9 +12,9 @@
 
 bool bkWorld::init()
 {
-	if (!map.init() ) goto err_quit;
-	if (!bkBloodInit() ) goto err_quit;
-	if (!bkBunnyDrawerLoad() ) goto err_quit;
+	if (!map.init()) goto err_quit;
+	if (!bkBloodInit()) goto err_quit;
+	if (!bkBunnyDrawerLoad()) goto err_quit;
 
 	return true;
 err_quit:
@@ -104,7 +104,7 @@ void bkWorld::update (float time)
 	}
 
 	if (level) {
-		if (dist > 5 + sqrtf (level) ) setlevel (level + 1);
+		if (dist > 5 + sqrtf (level)) setlevel (level + 1);
 		if (level == 6) if (timer > 3) if (timer < 5) game.osd.message
 					("Beware of mutated bunnies");
 	} else {
@@ -121,15 +121,15 @@ void bkWorld::update (float time)
 
 	if (camera > 10) move_camera_to_zero();
 
-	if (exaIsKeyDown (EKEY_m) )
-		if (exaIsKeyDown (EKEY_l) )
-			if (exaIsKeyDown (EKEY_i) )
+	if (exaIsKeyDown (EKEY_m))
+		if (exaIsKeyDown (EKEY_l))
+			if (exaIsKeyDown (EKEY_i))
 				++lives;
 
-	if (exaIsKeyHit (EKEY_i) || exaIsKeyHit (EKEY_d) || exaIsKeyHit (EKEY_q) )
-		if (exaIsKeyDown (EKEY_q) )
-			if (exaIsKeyDown (EKEY_d) )
-				if (exaIsKeyDown (EKEY_i) )
+	if (exaIsKeyHit (EKEY_i) || exaIsKeyHit (EKEY_d) || exaIsKeyHit (EKEY_q))
+		if (exaIsKeyDown (EKEY_q))
+			if (exaIsKeyDown (EKEY_d))
+				if (exaIsKeyDown (EKEY_i))
 					setlevel (level + 1);
 }
 
@@ -139,7 +139,7 @@ void bkWorld::setlevel (int l)
 	timer = 0;
 	dist = 0;
 	if (level)
-		game.osd.message ("Level " + itos (level) );
+		game.osd.message ("Level " + itos (level));
 	else score = 0;
 }
 
@@ -159,8 +159,8 @@ void bkWorld::draw()
 	glColor4f (1, 1, 1, 1);
 	glVertex2f (0, 0.25);
 	glVertex2f (0, -0.25);
-	glColor4f (1, 0.5* (1 + sinf (timer*10) ),
-	           0.5* (1 + cosf (timer*11) ), 0);
+	glColor4f (1, 0.5 * (1 + sinf (timer * 10)),
+	           0.5 * (1 + cosf (timer * 11)), 0);
 	glVertex2f (0.01, -0.25);
 	glVertex2f (0.01, 0.25);
 	glEnd();

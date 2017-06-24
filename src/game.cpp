@@ -9,15 +9,15 @@
 bool bkGame::init()
 {
 	exaSetParams (screenx, screeny, 32, 0);
-	if (!exaInit() ) return false;
+	if (!exaInit()) return false;
 	exaSetWindowCaption ("BunnyKill Ultimate");
 
-	if (!sound.init() ) {
+	if (!sound.init()) {
 		exaShutdown();
 		return false;
 	}
 
-	if (!osd.init() ) {
+	if (!osd.init()) {
 		sound.shutdown();
 		exaShutdown();
 		return false;
@@ -25,7 +25,7 @@ bool bkGame::init()
 
 	input.init();
 
-	if (!sky.init() ) {
+	if (!sky.init()) {
 		sound.shutdown();
 		osd.release();
 		exaShutdown();
@@ -33,7 +33,7 @@ bool bkGame::init()
 	}
 	sky.set (0);
 
-	if (!world.init() ) {
+	if (!world.init()) {
 		sky.release();
 		sound.shutdown();
 		osd.release();
@@ -52,7 +52,7 @@ bool bkGame::init()
 	glDisable (GL_DEPTH_TEST);
 	glFrontFace (GL_CCW);
 
-	srand (time (NULL) );
+	srand (time (NULL));
 
 	return true;
 }
@@ -61,7 +61,7 @@ bool bkGame::update()
 {
 	float time = exaGetElapsedTime();
 	while (time < 0.02) {
-		exaUSleep ( (unsigned int) (1000000*0.02 - time) );
+		exaUSleep ( (unsigned int) (1000000 * 0.02 - time));
 		time += exaGetElapsedTime();
 	}
 	statetimer += time;
@@ -75,7 +75,7 @@ bool bkGame::update()
 	else world.update (time);
 	sky.update (time);
 
-	if (!exaIsIconified() ) render();
+	if (!exaIsIconified()) render();
 
 	switch (gamestate) {
 	case gsRunning:
@@ -86,7 +86,7 @@ bool bkGame::update()
 		break;
 
 	case gsQuit:
-		if (input.hit[keyJump] || (statetimer > 3) ) {
+		if (input.hit[keyJump] || (statetimer > 3)) {
 			gamestate = gsBanner;
 			statetimer = 0;
 		}
@@ -94,7 +94,7 @@ bool bkGame::update()
 		break;
 
 	case gsResult:
-		if (input.hit[keyJump] || (statetimer > 10) ) {
+		if (input.hit[keyJump] || (statetimer > 10)) {
 			gamestate = gsScore;
 			statetimer = 0;
 		} else if (input.hit[keyQuit]) {
@@ -154,11 +154,11 @@ void bkGame::shutdown()
 
 int main()
 {
-	game.screenx = 1920;
-	game.screeny = 1080;
+	game.screenx = 1024;
+	game.screeny = 768;
 	game.playername = getenv ("USER");
-	if (!game.init() ) return -1;
-	while (game.update() );
+	if (!game.init()) return -1;
+	while (game.update());
 	game.shutdown();
 	return 0;
 }

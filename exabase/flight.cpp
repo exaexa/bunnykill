@@ -112,8 +112,8 @@ void drawscene (float dtime)
 	glBlendFunc (GL_ONE, GL_ONE);
 	glDepthMask (GL_FALSE);
 	glPushMatrix();
-	glRotatef (cursorrot*360, 0, 0, 1);
-	for (i = 0;i < 3;++i) {
+	glRotatef (cursorrot * 360, 0, 0, 1);
+	for (i = 0; i < 3; ++i) {
 		glRotatef (120, 0, 0, 1);
 		glBegin (GL_LINE_STRIP);
 		glColor3ub (0, 0, 0);
@@ -132,14 +132,14 @@ void drawscene (float dtime)
 	glVertex3f (0, 0, 0);
 	glVertex3fv (gcspd.v);
 	glColor3f (0.2, 0.4, 0.8);
-	for (i = -11;i <= 11;i += 2)
-		for (j = -11;j <= 11;j += 2) {
-			glVertex3f (-110, 10*i, 10*j);
-			glVertex3f (110, 10*i, 10*j);
-			glVertex3f (10*i, -110, 10*j);
-			glVertex3f (10*i, 110, 10*j);
-			glVertex3f (10*i, 10*j, -110);
-			glVertex3f (10*i, 10*j, 110);
+	for (i = -11; i <= 11; i += 2)
+		for (j = -11; j <= 11; j += 2) {
+			glVertex3f (-110, 10 * i, 10 * j);
+			glVertex3f (110, 10 * i, 10 * j);
+			glVertex3f (10 * i, -110, 10 * j);
+			glVertex3f (10 * i, 110, 10 * j);
+			glVertex3f (10 * i, 10 * j, -110);
+			glVertex3f (10 * i, 10 * j, 110);
 		}
 	glEnd();
 
@@ -180,13 +180,13 @@ void drawscene (float dtime)
 		glPushMatrix();
 		font.write (buf);
 		glPopMatrix();
-		triangle tr (vector (0, 0, -10), vector (10, 0, 0), vector (-10, 0, 0) );
-		sprintf (buf, "par: %0.3f", tr.planedist (pos) );
+		triangle tr (vector (0, 0, -10), vector (10, 0, 0), vector (-10, 0, 0));
+		sprintf (buf, "par: %0.3f", tr.planedist (pos));
 		glTranslatef (-10, 1, 0);
 		glPushMatrix();
 		font.write (buf);
 		glPopMatrix();
-		sprintf (buf, "cams: %0.4f", gcspd.length() );
+		sprintf (buf, "cams: %0.4f", gcspd.length());
 		glTranslatef (-10, 1, 0);
 		glPushMatrix();
 		font.write (buf);
@@ -204,12 +204,10 @@ void drawscene (float dtime)
 bool processconsole()
 {
 	char cmd[256];
-	while (console.getnextcmd (cmd, 256, false) ) {
-		if (0 == strcmp (cmd, "quit") ) return false;
-		else
-			if (0 == strcmp (cmd, "fps_lock") ) lockfps = true;
-			else
-				if (0 == strcmp (cmd, "fps_unlock") ) lockfps = false;
+	while (console.getnextcmd (cmd, 256, false)) {
+		if (0 == strcmp (cmd, "quit")) return false;
+		else if (0 == strcmp (cmd, "fps_lock")) lockfps = true;
+		else if (0 == strcmp (cmd, "fps_unlock")) lockfps = false;
 	}
 	return true;
 }
@@ -222,116 +220,116 @@ bool processgamelogic (float time)
 	exaGetMouseMove (&mx, &my);
 	newrot.x += my * 0.01;
 	newrot.y -= mx * 0.01;
-	if (exaIsMouseButtonDown (3) ) newrot.z += 15 * time;
-	if (exaIsMouseButtonDown (1) ) newrot.z -= 15 * time;
-	if (exaIsKeyDown (EKEY_KP5) ) newrot.x += 15 * time;
-	if (exaIsKeyDown (EKEY_KP8) ) newrot.x -= 15 * time;
-	if (exaIsKeyDown (EKEY_KP4) ) newrot.y += 15 * time;
-	if (exaIsKeyDown (EKEY_KP6) ) newrot.y -= 15 * time;
-	if (exaIsKeyDown (EKEY_KP9) ) newrot.z += 15 * time;
-	if (exaIsKeyDown (EKEY_KP7) ) newrot.z -= 15 * time;
+	if (exaIsMouseButtonDown (3)) newrot.z += 15 * time;
+	if (exaIsMouseButtonDown (1)) newrot.z -= 15 * time;
+	if (exaIsKeyDown (EKEY_KP5)) newrot.x += 15 * time;
+	if (exaIsKeyDown (EKEY_KP8)) newrot.x -= 15 * time;
+	if (exaIsKeyDown (EKEY_KP4)) newrot.y += 15 * time;
+	if (exaIsKeyDown (EKEY_KP6)) newrot.y -= 15 * time;
+	if (exaIsKeyDown (EKEY_KP9)) newrot.z += 15 * time;
+	if (exaIsKeyDown (EKEY_KP7)) newrot.z -= 15 * time;
 	rot += ori.relate (newrot);
 	ori += rot * time;
 	rot *= powf (0.02f, time);
-	if (exaIsKeyDown (EKEY_w) ) spd += 30 * ori.fw * time;
-	if (exaIsKeyDown (EKEY_s) ) spd -= 10 * ori.fw * time;
-	if (exaIsKeyDown (EKEY_q) ) spd += 10 * ori.up * time;
-	if (exaIsKeyDown (EKEY_e) ) spd -= 10 * ori.up * time;
-	if (exaIsKeyDown (EKEY_a) ) spd += 10 * ori.left() * time;
-	if (exaIsKeyDown (EKEY_d) ) spd += 10 * ori.right() * time;
+	if (exaIsKeyDown (EKEY_w)) spd += 30 * ori.fw * time;
+	if (exaIsKeyDown (EKEY_s)) spd -= 10 * ori.fw * time;
+	if (exaIsKeyDown (EKEY_q)) spd += 10 * ori.up * time;
+	if (exaIsKeyDown (EKEY_e)) spd -= 10 * ori.up * time;
+	if (exaIsKeyDown (EKEY_a)) spd += 10 * ori.left() * time;
+	if (exaIsKeyDown (EKEY_d)) spd += 10 * ori.right() * time;
 	pos += time * spd;
 	spd *= powf (0.5f, time);
 	cometsys.update (time, &particlesys);
 	particlesys.update (time);
 	float temp = (spd % ori.fw) / 45;
 	if (temp > 1) temp = 1;
-	engine->pitch (0.7 + 0.6*temp);
+	engine->pitch (0.7 + 0.6 * temp);
 	temp = temp * temp;
 	if (particletime > 0.01f) particletime = 0.01f;
 	particletime += time;
 	float ppt = 0;
-	if (exaIsKeyDown (EKEY_w) ) {
+	if (exaIsKeyDown (EKEY_w)) {
 		ppt = particletime;
 		while (ppt > 0.01) {
-			particlesys.createparticle (pos - 1.3*ori.fw,
-			                            -ori.fw*3, vector (0, 0, 0),
+			particlesys.createparticle (pos - 1.3 * ori.fw,
+			                            -ori.fw * 3, vector (0, 0, 0),
 			                            0.8, 0.3, 0, 0, 0.5f,
 			                            1 - temp, 0.5, temp);
-			particlesys.createparticle (pos - 1.3*ori.fw,
-			                            -ori.fw*3 + (vector (DFRAND, DFRAND, DFRAND) | 0.7),
+			particlesys.createparticle (pos - 1.3 * ori.fw,
+			                            -ori.fw * 3 + (vector (DFRAND, DFRAND, DFRAND) | 0.7),
 			                            vector (0, 0, 0),
 			                            0.5, 50, 0, 0.7, 0,
 			                            0.3, 0.3, 0.3);
 			ppt -= 0.01;
 		}
 	}
-	if (exaIsKeyDown (EKEY_s) ) {
+	if (exaIsKeyDown (EKEY_s)) {
 		ppt = particletime;
 		while (ppt >= 0.01) {
-			particlesys.createparticle (pos + ori.fw*2, ori.fw*15, vector (0, 0, 0),
+			particlesys.createparticle (pos + ori.fw * 2, ori.fw * 15, vector (0, 0, 0),
 			                            0.3, 0.3, 0, 0.999, 0.5f,
 			                            0.2, 0.5, 1);
 			ppt -= 0.01;
 		}
 	}
-	if (exaIsKeyDown (EKEY_a) ) {
+	if (exaIsKeyDown (EKEY_a)) {
 		ppt = particletime;
 		while (ppt >= 0.01) {
-			particlesys.createparticle (pos + ori.right() *0.5, ori.right() *15, vector (0, 0, 0),
+			particlesys.createparticle (pos + ori.right() * 0.5, ori.right() * 15, vector (0, 0, 0),
 			                            0.3, 0.3, 0, 0.999, 0.5f,
 			                            0.2, 0.5, 1);
 			ppt -= 0.01;
 		}
 	}
-	if (exaIsKeyDown (EKEY_d) ) {
+	if (exaIsKeyDown (EKEY_d)) {
 		ppt = particletime;
 		while (ppt >= 0.01) {
-			particlesys.createparticle (pos + ori.left() *0.5, ori.left() *15, vector (0, 0, 0),
+			particlesys.createparticle (pos + ori.left() * 0.5, ori.left() * 15, vector (0, 0, 0),
 			                            0.3, 0.3, 0, 0.999, 0.5f,
 			                            0.2, 0.5, 1);
 			ppt -= 0.01;
 		}
 	}
-	if (exaIsKeyDown (EKEY_e) ) {
+	if (exaIsKeyDown (EKEY_e)) {
 		ppt = particletime;
 		while (ppt >= 0.01) {
-			particlesys.createparticle (pos + ori.up*0.2, ori.up*15, vector (0, 0, 0),
+			particlesys.createparticle (pos + ori.up * 0.2, ori.up * 15, vector (0, 0, 0),
 			                            0.3, 0.3, 0, 0.999, 0.5f,
 			                            0.2, 0.5, 1);
 			ppt -= 0.01;
 		}
 	}
-	if (exaIsKeyDown (EKEY_q) ) {
+	if (exaIsKeyDown (EKEY_q)) {
 		ppt = particletime;
 		while (ppt >= 0.01) {
-			particlesys.createparticle (pos, -ori.up*15, vector (0, 0, 0),
+			particlesys.createparticle (pos, -ori.up * 15, vector (0, 0, 0),
 			                            0.3, 0.3, 0, 0.999, 0.5f,
 			                            0.2, 0.5, 1);
 			ppt -= 0.01;
 		}
 	}
 	particletime = ppt;
-	if (exaIsKeyHit (EKEY_z) )
-		cometsys.createcomet (pos + ori.fw*2, ori.fw*50, vector (0, 0, 0), 4, 0, 0,
+	if (exaIsKeyHit (EKEY_z))
+		cometsys.createcomet (pos + ori.fw * 2, ori.fw * 50, vector (0, 0, 0), 4, 0, 0,
 		                      0.005, 0.3, 1, 0.1, 0, 0.3, 0, 1, 1, 0.3, 0, 0.99, 0);
-	if (exaIsKeyHit (EKEY_x) )
-		cometsys.createcomet (pos + ori.fw*2, ori.fw*20, vector (0, 0, 0), 1, 0, 0,
+	if (exaIsKeyHit (EKEY_x))
+		cometsys.createcomet (pos + ori.fw * 2, ori.fw * 20, vector (0, 0, 0), 1, 0, 0,
 		                      0.05, 0.2, 0.5, 1, 0, 0.3, 0, 1, 1, 0.3, 0, 0.99, 0,
 		                      100, 1, 0.7, 0.2, 0, 0.75, 0, 0, 20, 0, 1, 0, 0.8, 0,
 		                      3, 1, 20, 0.5, 0.5, 1, 0);
-	if (exaIsKeyHit (EKEY_c) ) {
-		cometsys.createcomet (pos + ori.fw*2, ori.fw*200, vector (DFRAND, DFRAND, DFRAND) | 200, 1, 0, 0,
+	if (exaIsKeyHit (EKEY_c)) {
+		cometsys.createcomet (pos + ori.fw * 2, ori.fw * 200, vector (DFRAND, DFRAND, DFRAND) | 200, 1, 0, 0,
 		                      0.0003, 0.5, 0.6, 1, 0, 0.2, 0, 0, 0.2, 0.5, 0.2, 0.99, 0);
 	}
 
 
-	if (exaIsKeyHit (EKEY_F3) ) {
+	if (exaIsKeyHit (EKEY_F3)) {
 		ori = orientation();
 		pos = vector (0, 0, -5);
 		spd *= 0;
 		rot *= 0;
 	}
-	if (exaIsKeyDown (EKEY_F2) ) {
+	if (exaIsKeyDown (EKEY_F2)) {
 		console.printf ("Orientation: fw(%f,%f,%f) up(%f,%f,%f)",
 		                ori.fw.x, ori.fw.y, ori.fw.z,
 		                ori.up.x, ori.up.y, ori.up.z);
@@ -348,17 +346,17 @@ bool processgamelogic (float time)
 
 
 	if (!staticcam) {
-		if (exaIsKeyDown (EKEY_v) )
+		if (exaIsKeyDown (EKEY_v))
 			camera.update (time, camerapos = (pos - ori.fw * 5 + ori.up * 20), pos + 20 * ori.fw, ori.up, cameraratio = 0.9f);
-		else if (exaIsKeyDown (EKEY_f) )
+		else if (exaIsKeyDown (EKEY_f))
 			camera.update (time, camerapos = (pos + ori.fw * 5), ori, cameraratio = 0.999999f);
-		else if (exaIsKeyDown (EKEY_r) )
+		else if (exaIsKeyDown (EKEY_r))
 			camera.update (time, camerapos = (pos + ori.fw * 4 + ori.up), ori.backwards(), cameraratio = 0.9999f);
 		else
 			camera.update (time, camerapos = (pos - ori.fw * 5 + ori.up * 2), ori, cameraratio = 0.9999f);
 	} else camera.update (time, camerapos = (camera.pos), pos, camera.ori.up, cameraratio = 0.7f);
 
-	if (exaIsKeyHit (EKEY_F4) ) {
+	if (exaIsKeyHit (EKEY_F4)) {
 		staticcam = !staticcam;
 		if (staticcam) console.echo ("Static camera turned ON");
 		else console.echo ("Static camera turned OFF");
@@ -374,17 +372,17 @@ bool processgamelogic (float time)
 
 	exaSound.listenerpos (camera.pos);
 	exaSound.listenerori (camera.ori.fw, camera.ori.up);
-	exaSound.listenerspd (- (gcspd = camera.getvectorspeed (camerapos, cameraratio) ) );
+	exaSound.listenerspd (- (gcspd = camera.getvectorspeed (camerapos, cameraratio)));
 	engine->position (pos);
 	engine->speed (spd);
 	static float enginevolume = 0.3f;
-	if (exaIsKeyDown (EKEY_w) ) enginevolume += 3 * time;
+	if (exaIsKeyDown (EKEY_w)) enginevolume += 3 * time;
 	enginevolume -= time;
 	if (enginevolume > 1) enginevolume = 1;
 	if (enginevolume < 0.3f) enginevolume = 0.3f;
 	engine->volume (enginevolume);
 
-	if (exaIsKeyHit (EKEY_F12) ) {
+	if (exaIsKeyHit (EKEY_F12)) {
 		int x, y, b;
 		char*d;
 		exaScreenshot (&x, &y, &b, &d);
@@ -456,7 +454,7 @@ int main (int argc, char**argv)
 	float fpstime = 0;
 	int nkeys, *keys;
 	exaSetParams (1024, 768, 32);
-	if (!exaInit() ) return -1;
+	if (!exaInit()) return -1;
 	font.loadfromfreetype ("consolefont.ttf", 24);
 	//font.loadfromfreetype("/usr/share/fonts/corefonts/verdana.ttf");
 	//font.loadfromfiles("font2_bitmap.raw","font2_descriptor.raw",
@@ -481,19 +479,19 @@ int main (int argc, char**argv)
 			}
 		fpstime += dtime;
 		exaUpdate();
-		if (!exaIsIconified() ) {
+		if (!exaIsIconified()) {
 			quit = !processgamelogic (dtime);
 			drawscene (dtime);
 		}
 		quit |= !processconsole();
-		if (exaIsKeyHit (EKEY_F1) ) showconsole = !showconsole;
+		if (exaIsKeyHit (EKEY_F1)) showconsole = !showconsole;
 		if (showconsole) {
 			nkeys = exaGetKeyTypes (&keys);
-			for (--nkeys;nkeys >= 0;--nkeys) {
+			for (--nkeys; nkeys >= 0; --nkeys) {
 				console.EKEYinput (keys[nkeys]);
 			}
 		}
-		if (1000 < (timer++) ) {
+		if (1000 < (timer++)) {
 			exaSound.updateadopted();
 			timer = 0;
 			console.printf ("fps: %f", 1000 / fpstime);

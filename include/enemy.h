@@ -31,7 +31,7 @@ using std::list;
 #else
 #define enemy_extern(t,x) t x
 #endif
-enemy_extern (list<bkEnemy> enemy, );
+enemy_extern (list<bkEnemy> enemy,);
 
 #endif
 

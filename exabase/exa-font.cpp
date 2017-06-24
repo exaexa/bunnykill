@@ -4,11 +4,11 @@
 #include <math.h>
 #include <string.h>
 #include <wchar.h>
-#include <freetype2/config/ftheader.h>
-#include <freetype2/freetype.h>
-#include <freetype2/ftglyph.h>
-#include <freetype2/ftoutln.h>
-#include <freetype2/fttrigon.h>
+#include <freetype2/freetype/config/ftheader.h>
+#include <freetype2/freetype/freetype.h>
+#include <freetype2/freetype/ftglyph.h>
+#include <freetype2/freetype/ftoutln.h>
+#include <freetype2/freetype/fttrigon.h>
 
 #include <unistd.h>
 
@@ -37,28 +37,28 @@ void exaGLFont::load (const void*textureData, GLenum textureFormat, GLenum textu
 
 	list = glGenLists (charnum);
 
-	for (i = 0;i < charnum;i++) {
+	for (i = 0; i < charnum; i++) {
 		//f=(float)fabs((float)(glyphParams[i].y1-glyphParams[i].y2)/(float)(glyphParams[i].x1-glyphParams[i].x2));
 
 
 		charlen[i] =
-		    f = (float) (fabs ( (glyphParams[i].x1) - (glyphParams[i].x2) )
-		                 / fabs ( (glyphParams[i].y1) - (glyphParams[i].y2) ) );
+		    f = (float) (fabs ( (glyphParams[i].x1) - (glyphParams[i].x2))
+		                 / fabs ( (glyphParams[i].y1) - (glyphParams[i].y2)));
 
 
 		glNewList (list + i, GL_COMPILE);
 		glBegin (GL_QUADS);
 		glTexCoord2f ( (float) glyphParams[i].x1 / (float) textureWidth,
-		               ( (float) glyphParams[i].y2 / (float) textureHeight) );
+		               ( (float) glyphParams[i].y2 / (float) textureHeight));
 		glVertex2f (0, 0);
 		glTexCoord2f ( (float) glyphParams[i].x2 / (float) textureWidth,
-		               ( (float) glyphParams[i].y2 / (float) textureHeight) );
+		               ( (float) glyphParams[i].y2 / (float) textureHeight));
 		glVertex2f (f, 0);
 		glTexCoord2f ( (float) glyphParams[i].x2 / (float) textureWidth,
-		               ( (float) glyphParams[i].y1 / (float) textureHeight) );
+		               ( (float) glyphParams[i].y1 / (float) textureHeight));
 		glVertex2f (f, 1);
 		glTexCoord2f ( (float) glyphParams[i].x1 / (float) textureWidth,
-		               ( (float) glyphParams[i].y1 / (float) textureHeight) );
+		               ( (float) glyphParams[i].y1 / (float) textureHeight));
 		glVertex2f (0, 1);
 		glEnd();
 		glTranslatef (f, 0, 0);
@@ -70,7 +70,7 @@ void exaGLFont::load (const void*textureData, GLenum textureFormat, GLenum textu
 void exaGLFont::unload()
 {
 	if (!isLoaded) return;
-	if (glIsTexture (texture) ) glDeleteTextures (1, &texture);
+	if (glIsTexture (texture)) glDeleteTextures (1, &texture);
 	if (ntexnames > 0) {
 		free (texnames);
 		ntexnames = 0;
@@ -83,7 +83,7 @@ void exaGLFont::unload()
 static int _next_p2 (int a)
 {
 	register int r = 1;
-	while ( (r < a) && (r != 0) ) r <<= 1;
+	while ( (r < a) && (r != 0)) r <<= 1;
 	return r;
 }
 
@@ -114,13 +114,13 @@ static void _makeglyph (int i, int charsizes[128][7], GLuint* texnames, int& max
 	expanded_data = (GLubyte*) malloc (sizeof (GLubyte)
 	                                   * charsizes[i][2] * charsizes[i][3] * 2);
 
-	for (b = 0;b < charsizes[i][3];++b)
-		for (a = 0;a < charsizes[i][2];++a)
-			expanded_data[2* (b*charsizes[i][2] + a) ] =
-			    expanded_data[2* (b*charsizes[i][2] + a) + 1] =
+	for (b = 0; b < charsizes[i][3]; ++b)
+		for (a = 0; a < charsizes[i][2]; ++a)
+			expanded_data[2 * (b * charsizes[i][2] + a) ] =
+			    expanded_data[2 * (b * charsizes[i][2] + a) + 1] =
 			        (a >= charsizes[i][0] ||
 			         b >= charsizes[i][1]) ?
-			        0 : (bmpglyph->bitmap.buffer[b*charsizes[i][0] + a]);
+			        0 : (bmpglyph->bitmap.buffer[b * charsizes[i][0] + a]);
 
 	glBindTexture (GL_TEXTURE_2D, texnames[i]);
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -138,11 +138,11 @@ bool exaGLFont::loadfromfreetype (const char* file, int resolution)
 	if (isLoaded) unload();
 	int i;
 	FT_Library ftlib;
-	if (FT_Init_FreeType (&ftlib) ) return false;
+	if (FT_Init_FreeType (&ftlib)) return false;
 	FT_Face face;
 	int charsizes[128][7];
 	int maxtop = 0, maxbottom = 16777216;
-	if (FT_New_Face (ftlib, file, 0, &face) ) {
+	if (FT_New_Face (ftlib, file, 0, &face)) {
 		FT_Done_FreeType (ftlib);
 		return false;
 	}
@@ -156,20 +156,20 @@ bool exaGLFont::loadfromfreetype (const char* file, int resolution)
 	glGenTextures (ntexnames, texnames);
 	float x, y;
 
-	for (i = 0;i < 128;++i)
+	for (i = 0; i < 128; ++i)
 		_makeglyph (i, charsizes, texnames, maxtop, maxbottom, face);
 	//now we have the biggest glyph, so we can scale
 	//other down to match >1< in size, as other texfont types...
 
 	float scale = 1.0f / (maxtop - maxbottom);
 
-	for (i = 0;i < 128;++i) {
+	for (i = 0; i < 128; ++i) {
 		glNewList (list + i, GL_COMPILE);
 		glBindTexture (GL_TEXTURE_2D, texnames[i]);
 		glTranslatef (charsizes[i][5]*scale, 0, 0);  //left
 		glPushMatrix();
 
-		glTranslatef (0, scale* (charsizes[i][6] - (charsizes[i][1] + maxbottom) ), 0);
+		glTranslatef (0, scale * (charsizes[i][6] - (charsizes[i][1] + maxbottom)), 0);
 
 		x = charsizes[i][0] / (float) charsizes[i][2];
 		y = charsizes[i][1] / (float) charsizes[i][3];
@@ -236,7 +236,7 @@ float exaGLFont::getstrlen (const char *str, unsigned long int maxlen)
 	if (!isLoaded) return 0;
 	float t;
 	unsigned long int i;
-	for (t = 0, i = 0; (*str != 0) && (i < maxlen);str++, i++) if ( (unsigned char) *str < charnum) t += charlen[*str];
+	for (t = 0, i = 0; (*str != 0) && (i < maxlen); str++, i++) if ( (unsigned char) *str < charnum) t += charlen[*str];
 	return t;
 }
 
@@ -245,7 +245,7 @@ float exaGLFont::getwstrlen (const wchar_t *str, unsigned long int maxlen)
 	if (!isLoaded) return 0;
 	float t;
 	unsigned long int i;
-	for (t = 0, i = 0; (*str != 0) && (i < maxlen);str++, i++) if ( (unsigned) (*str) < charnum) t += charlen[*str];
+	for (t = 0, i = 0; (*str != 0) && (i < maxlen); str++, i++) if ( (unsigned) (*str) < charnum) t += charlen[*str];
 	return t;
 }
 
@@ -262,9 +262,9 @@ void exaGLFont::writecolored (const char *str)
 	char *c = (char*) str;  //unconst
 	while (*c != 0) {
 		if (*c == '#') {
-			if ( (* (c + 1) >= '0') && (* (c + 1) <= '8') ) {
-				if ( (* (c + 2) >= '0') && (* (c + 2) <= '8') ) {
-					if ( (* (c + 3) >= '0') && (* (c + 3) <= '8') ) {
+			if ( (* (c + 1) >= '0') && (* (c + 1) <= '8')) {
+				if ( (* (c + 2) >= '0') && (* (c + 2) <= '8')) {
+					if ( (* (c + 3) >= '0') && (* (c + 3) <= '8')) {
 						/*glColor3ub((*(c+1)=='8')?255:(*(c+1)-'0')*32,
 							(*(c+2)=='8')?255:(*(c+2)-'0')*32,
 							(*(c+3)=='8')?255:(*(c+3)-'0')*32);*/
@@ -287,7 +287,7 @@ void exaGLFont::writecolored (const char *str)
 				if (*c == '#') c++;
 			} //## makes #
 		} else {
-			glCallList (list + (*c) );
+			glCallList (list + (*c));
 			c++;
 		}
 	}
@@ -299,11 +299,11 @@ float exaGLFont::getcoloredstrlen (const char *str, unsigned long int maxlen)
 	if (!isLoaded) return 0;
 	char*c = (char*) str;
 	float t = 0;
-	while ( (*c != 0) && ( (unsigned long int) (c - str) < maxlen) ) {
+	while ( (*c != 0) && ( (unsigned long int) (c - str) < maxlen)) {
 		if (*c == '#') {
-			if ( (* (c + 1) >= '0') && (* (c + 1) <= '8') ) {
-				if ( (* (c + 2) >= '0') && (* (c + 2) <= '8') ) {
-					if ( (* (c + 3) >= '0') && (* (c + 3) <= '8') ) {
+			if ( (* (c + 1) >= '0') && (* (c + 1) <= '8')) {
+				if ( (* (c + 2) >= '0') && (* (c + 2) <= '8')) {
+					if ( (* (c + 3) >= '0') && (* (c + 3) <= '8')) {
 						c += 4;
 					} else {
 						t += charlen['#'];
@@ -335,7 +335,7 @@ bool exaGLFont::loadfromfiles (const char *rawgreybitmap, const char *rawdescrip
 	FILE * f;
 
 	b = (char*) malloc (bsizex * bsizey * 2);
-	gb = (exaGlyphParams*) malloc (nglyphs * sizeof (exaGlyphParams) );
+	gb = (exaGlyphParams*) malloc (nglyphs * sizeof (exaGlyphParams));
 
 	f = fopen (rawdescriptor, "rb");
 	if (!f) {
@@ -356,7 +356,7 @@ bool exaGLFont::loadfromfiles (const char *rawgreybitmap, const char *rawdescrip
 	fclose (f);
 
 	int i;
-	for (i = (bsizex * bsizey) - 1;i >= 0;i--) b[i*2] = b[ (i*2) +1] = b[i];
+	for (i = (bsizex * bsizey) - 1; i >= 0; i--) b[i * 2] = b[ (i * 2) + 1] = b[i];
 	//add alpha...that's kinda cool for work with fonts;)
 
 	load (b, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, 2, bsizex, bsizey, nglyphs, gb);

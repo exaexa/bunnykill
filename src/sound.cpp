@@ -18,11 +18,11 @@ bool bkSound::init()
 {
 	int i;
 	updcounter = 0;
-	if (!exaSound.init() ) return false;
-	for (i = 0;i < _nsounds;++i) {
+	if (!exaSound.init()) return false;
+	for (i = 0; i < _nsounds; ++i) {
 		sbuf[i] = exaSound.createbuffer();
-		if (! (sbuf[i]) ) return false;
-		if (! (sbuf[i]->loadfile (getsoundfilename (i) ) ) )
+		if (! (sbuf[i])) return false;
+		if (! (sbuf[i]->loadfile (getsoundfilename (i))))
 			return false;
 	}
 	return true;
@@ -38,7 +38,7 @@ void bkSound::shutdown()
 {
 	int i;
 	exaSound.stopadopted();
-	for (i = 0;i < _nsounds;++i) {
+	for (i = 0; i < _nsounds; ++i) {
 		sbuf[i]->release();
 		delete (sbuf[i]);
 	}

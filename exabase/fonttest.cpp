@@ -69,24 +69,21 @@ void drawscene (float dtime)
 bool processconsole()
 {
 	char cmd[256];
-	while (console.getnextcmd (cmd, 256, false) ) {
-		if (0 == strcmp (cmd, "quit") ) return false;
-		else
-			if (0 == strncmp (cmd, "play ", 5) ) {
-				exaBuffer*b;
-				exaSample*s;
-				b = exaSound.createbuffer();
-				if (b->loadfile (cmd + 5) ) {
-					s = exaSound.createsample (b);
-					s->position (vector (DFRAND, DFRAND, 0) );
-					s->play();
-					s->release();
-					b->release();
-				}
-			} else
-				if (0 == strcmp (cmd, "fps_lock") ) lockfps = true;
-				else
-					if (0 == strcmp (cmd, "fps_unlock") ) lockfps = false;
+	while (console.getnextcmd (cmd, 256, false)) {
+		if (0 == strcmp (cmd, "quit")) return false;
+		else if (0 == strncmp (cmd, "play ", 5)) {
+			exaBuffer*b;
+			exaSample*s;
+			b = exaSound.createbuffer();
+			if (b->loadfile (cmd + 5)) {
+				s = exaSound.createsample (b);
+				s->position (vector (DFRAND, DFRAND, 0));
+				s->play();
+				s->release();
+				b->release();
+			}
+		} else if (0 == strcmp (cmd, "fps_lock")) lockfps = true;
+		else if (0 == strcmp (cmd, "fps_unlock")) lockfps = false;
 	}
 	return true;
 }
@@ -102,7 +99,7 @@ int main (int argc, char**argv)
 	float fpstime = 0;
 	int nkeys, *keys;
 	exaSetParams (1024, 768, 32);
-	if (!exaInit() ) return -1;
+	if (!exaInit()) return -1;
 	//font.loadfromfreetype("consolefont.ttf",256);
 	font.loadfromfreetype ("/usr/share/fonts/corefonts/verdana.ttf", 32);
 	//font.loadfromfiles("font2_bitmap.raw","font2_descriptor.raw",
@@ -111,8 +108,8 @@ int main (int argc, char**argv)
 	initgl();
 
 	exaSound.init();
-	exaSound.listenerpos (vector (0, 0, 0) );
-	exaSound.listenerori (vector (0, 0, -1), vector (0, 1, 0) );
+	exaSound.listenerpos (vector (0, 0, 0));
+	exaSound.listenerori (vector (0, 0, -1), vector (0, 1, 0));
 
 	exaBuffer* b = exaSound.createbuffer();
 	b->loadfile ("bombpl.wav");
@@ -133,24 +130,23 @@ int main (int argc, char**argv)
 		rottime += dtime;
 		fpstime += dtime;
 		exaUpdate();
-		if (!exaIsIconified() ) drawscene (dtime);
+		if (!exaIsIconified()) drawscene (dtime);
 		quit = !processconsole();
-		if (exaIsKeyHit (EKEY_BACKQUOTE) ) showconsole = !showconsole;
-		else
-			if (showconsole) {
-				nkeys = exaGetKeyTypes (&keys);
-				for (--nkeys;nkeys >= 0;--nkeys) {
-					console.EKEYinput (keys[nkeys]);
-				}
+		if (exaIsKeyHit (EKEY_BACKQUOTE)) showconsole = !showconsole;
+		else if (showconsole) {
+			nkeys = exaGetKeyTypes (&keys);
+			for (--nkeys; nkeys >= 0; --nkeys) {
+				console.EKEYinput (keys[nkeys]);
 			}
-		if (10000 < (timer++) ) {
+		}
+		if (10000 < (timer++)) {
 			exaSound.updateadopted();
 			timer = 0;
 			console.printf ("fps: %f", 10000 / fpstime);
 			fpstime = 0;
 		}
-		rotsource->position (vector (sinf (rottime), 0, cosf (rottime) ) );
-		if (rottime > 2*M_PI) rottime -= (2 * M_PI);
+		rotsource->position (vector (sinf (rottime), 0, cosf (rottime)));
+		if (rottime > 2 * M_PI) rottime -= (2 * M_PI);
 	}
 	rotsource->stop();
 	rotsource->destroy();

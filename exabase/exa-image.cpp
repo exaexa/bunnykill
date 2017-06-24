@@ -5,13 +5,13 @@
 #include <stdlib.h>
 #include "exa-image.h"
 #include <png.h>
+#include <zlib.h>
 
 #include <GL/glu.h>
 
 #pragma pack(push,1)
 
-typedef struct
-{
+typedef struct {
 	unsigned short id;
 	unsigned int fileSize;
 	unsigned short reserved[2];
@@ -40,19 +40,19 @@ bool exaImageReadBMP (const char*fn, int*x, int*y, int*bytes, char**data)
 
 	BMPHEADER bh;
 
-	if (!fread (&bh, sizeof (BMPHEADER), 1, f) )
+	if (!fread (&bh, sizeof (BMPHEADER), 1, f))
 		goto close_err;
 
 	if (bh.id != * (uint16_t*) "BM")
 		goto close_err;
 
-	if ( (bh.headerSize != 54) || (bh.infoSize != 40) )
+	if ( (bh.headerSize != 54) || (bh.infoSize != 40))
 		goto close_err;
 
 	*x = bh.width;
 	*y = bh.height;
 	*bytes = bh.bits / 8;
-	*data = (char*) malloc ( (*x) * (*y) * (*bytes) );
+	*data = (char*) malloc ( (*x) * (*y) * (*bytes));
 	fread (*data, (*x) * (*y) * (*bytes), 1, f);
 	fclose (f);
 	return true;
@@ -64,15 +64,15 @@ close_err:
 bool exaImageWriteBMP (const char*fn, int x, int y, int bytes, char*data,
                        bool bgrswap)
 {
-	if ( (!data) || (!fn) ) return false;
-	if ( (x < 0) || (y < 0) || (bytes != 3) ) return false;
+	if ( (!data) || (!fn)) return false;
+	if ( (x < 0) || (y < 0) || (bytes != 3)) return false;
 
 	FILE*f = fopen (fn, "wb");
 	if (!f) return false;
 
 	BMPHEADER bh;
 
-	memset ( (char*) &bh, 0, sizeof (BMPHEADER) );
+	memset ( (char*) &bh, 0, sizeof (BMPHEADER));
 
 	memcpy (& (bh.id), "BM", 2);
 	bh.fileSize = sizeof (BMPHEADER) + x * y * 3;
@@ -88,15 +88,15 @@ bool exaImageWriteBMP (const char*fn, int x, int y, int bytes, char*data,
 
 	if (bgrswap) {
 		char t;
-		for (int i = 0;i < x*y;++i) {
-			t = data[3*i];
-			data[3*i] = data[3*i+2];
-			data[3*i+2] = t;
+		for (int i = 0; i < x * y; ++i) {
+			t = data[3 * i];
+			data[3 * i] = data[3 * i + 2];
+			data[3 * i + 2] = t;
 		}
 	}
 
 	fwrite (&bh, sizeof (bh), 1, f);
-	fwrite (data, 3*x*y, 1, f);
+	fwrite (data, 3 * x * y, 1, f);
 	fclose (f);
 
 	return true;
@@ -111,7 +111,7 @@ bool exaImageReadPNG (const char*fn, int*x, int*y, int*bytes, char**data)
 		return false;
 
 	fread (header, 8, 1, fp);
-	if (png_sig_cmp ( (png_byte*) header, 0, 8) ) {
+	if (png_sig_cmp ( (png_byte*) header, 0, 8)) {
 		fclose (fp);
 		return false;
 	}
@@ -137,12 +137,13 @@ bool exaImageReadPNG (const char*fn, int*x, int*y, int*bytes, char**data)
 	png_read_png (png_ptr, info_ptr,
 	              PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING, NULL);
 
-	int h, w, b;
+	png_uint_32 h, w;
+	int b, ct;
 
-	h = info_ptr->height;
-	w = info_ptr->width;
+	h = w = b = ct = 0;
+	png_get_IHDR (png_ptr, info_ptr, &w, &h, &b, &ct, NULL, NULL, NULL);
 
-	switch (info_ptr->color_type) {
+	switch (ct) {
 	case PNG_COLOR_TYPE_GRAY:
 		b = 1;
 		break;
@@ -166,8 +167,8 @@ bool exaImageReadPNG (const char*fn, int*x, int*y, int*bytes, char**data)
 	rows = png_get_rows (png_ptr, info_ptr);
 	int i;
 	char*dat = (char*) malloc (w * h * b);
-	for (i = 0;i < h;++i)
-		memcpy (dat + i*w*b, rows[h-i-1], w*b);
+	for (i = 0; i < h; ++i)
+		memcpy (dat + i * w * b, rows[h - i - 1], w * b);
 
 	png_destroy_read_struct (&png_ptr, &info_ptr, NULL);
 
@@ -183,8 +184,8 @@ bool exaImageReadPNG (const char*fn, int*x, int*y, int*bytes, char**data)
 
 bool exaImageWritePNG (const char*fn, int x, int y, int bytes, char*data)
 {
-	if ( (x < 0) || (y < 0) || (bytes < 1) || (bytes > 4) ) return false;
-	if ( (!data) || (!fn) ) return false;
+	if ( (x < 0) || (y < 0) || (bytes < 1) || (bytes > 4)) return false;
+	if ( (!data) || (!fn)) return false;
 	FILE*f = fopen (fn, "wb");
 	if (!f) return false;
 
@@ -232,10 +233,10 @@ bool exaImageWritePNG (const char*fn, int x, int y, int bytes, char*data)
 	              PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT,
 	              PNG_FILTER_TYPE_DEFAULT);
 
-	png_bytep* rows = (png_bytep*) malloc (y * sizeof (png_bytep) );
+	png_bytep* rows = (png_bytep*) malloc (y * sizeof (png_bytep));
 
 	int i;
-	for (i = 0;i < y;++i) rows[y-i-1] = (png_bytep) (data + (x * bytes * i) );
+	for (i = 0; i < y; ++i) rows[y - i - 1] = (png_bytep) (data + (x * bytes * i));
 	png_set_rows (png_ptr, info_ptr, rows);
 
 	png_write_png (png_ptr, info_ptr, 0, NULL);
@@ -252,7 +253,7 @@ bool exaImageWritePNG (const char*fn, int x, int y, int bytes, char*data)
 static bool _ispw2 (int a)
 {
 	while (a) {
-		if (a&1) {
+		if (a & 1) {
 			a >>= 1;
 			if (a) return false;
 		} else a >>= 1;
@@ -265,9 +266,9 @@ GLuint exaImageMakeGLTex (int x, int y, int b, char* d,
 {
 	GLuint tex;
 	if (!d) return 0;
-	if ( (x < 0) || (y < 0) || (b < 1) || (b > 4) ) return 0;
-	if (!_ispw2 (x) ) return 0;
-	if (!_ispw2 (y) ) return 0;
+	if ( (x < 0) || (y < 0) || (b < 1) || (b > 4)) return 0;
+	if (!_ispw2 (x)) return 0;
+	if (!_ispw2 (y)) return 0;
 
 	int glmode = 0;
 	switch (b) {
@@ -294,7 +295,7 @@ GLuint exaImageMakeGLTex (int x, int y, int b, char* d,
 	                 fil ? GL_LINEAR : GL_NEAREST);
 	glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
 	                 mpmp ? (fil ? GL_LINEAR_MIPMAP_NEAREST : GL_NEAREST_MIPMAP_NEAREST)
-			                 : (fil ? GL_LINEAR : GL_NEAREST) );
+	                 : (fil ? GL_LINEAR : GL_NEAREST));
 	if (mpmp) gluBuild2DMipmaps (GL_TEXTURE_2D, b, x, y,
 		                             glmode, GL_UNSIGNED_BYTE, d);
 	else glTexImage2D (GL_TEXTURE_2D, 0, b, x, y,
@@ -304,7 +305,7 @@ GLuint exaImageMakeGLTex (int x, int y, int b, char* d,
 
 void exaImageDelGLTex (GLuint t)
 {
-	if (glIsTexture (t) ) glDeleteTextures (1, &t);
+	if (glIsTexture (t)) glDeleteTextures (1, &t);
 }
 
 void exaImageFree (char*data)

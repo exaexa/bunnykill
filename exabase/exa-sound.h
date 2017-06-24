@@ -31,7 +31,8 @@ class exaStream;
 class exaSoundSystem;
 
 class exaSoundSystem
-{  //designed to be a global variable!
+{
+	//designed to be a global variable!
 private:
 	set<exaSample*> samples;
 	set<exaBuffer*> buffers;
@@ -39,7 +40,7 @@ private:
 	bool isinit;
 public:
 	exaSoundSystem()
-{};
+	{};
 	~exaSoundSystem()
 	{};
 
@@ -56,33 +57,27 @@ public:
 	void stopadopted();
 	void updateadopted();
 
-	inline void globalvolume (float vol)
-	{
+	inline void globalvolume (float vol) {
 		alListenerf (AL_GAIN, vol);
 	}
-	inline void listenerpos (vector pos)
-	{
+	inline void listenerpos (vector pos) {
 		alListenerfv (AL_POSITION, pos.v);
 	}
-	inline void listenerspd (vector spd)
-	{
+	inline void listenerspd (vector spd) {
 		alListenerfv (AL_VELOCITY, spd.v);
 	}
 	void listenerori (vector forward, vector top);
 
-	inline void soundspeed (float s)
-	{
+	inline void soundspeed (float s) {
 		alDopplerVelocity (s);
 	}
-	inline void dopplerfactor (float df)
-	{
+	inline void dopplerfactor (float df) {
 		alDopplerFactor (df);
 	}
 	//TRICKY, if doppler refuses to work,, change alDopplerVelocity
 	//to alSpeedOfSound. This is a compatibility problem. Solve.
 
-	inline void distancemodel (int m)
-	{
+	inline void distancemodel (int m) {
 		alDistanceModel (m);
 	}
 };
@@ -105,8 +100,7 @@ public:
 
 	exaBuffer();
 	~exaBuffer();
-	inline ALuint getalbuffer()
-	{
+	inline ALuint getalbuffer() {
 		return buffer;
 	}
 	bool loadfile (const char* filename);
@@ -131,66 +125,63 @@ public:
 	~exaSource();
 	void destroy();
 	int isplaying(); //0/1, 2=paused
-	inline void play()
-	{
+	inline void play() {
 		alSourcePlay (source);
 	}
-	inline void pause()
-	{
+	inline void pause() {
 		alSourcePause (source);
 	}
-	inline void stop()
-	{
+	inline void stop() {
 		alSourceStop (source);
 	}
-	inline void rewind()
-	{
+	inline void rewind() {
 		alSourceRewind (source);
 	}
 	//start from origin again
 
-	inline float elapsedseconds()  //from start, if looping, jumps to 0
-	{float s;
+	inline float elapsedseconds() { //from start, if looping, jumps to 0
+		float s;
 		alGetSourcef (source, AL_SEC_OFFSET, &s);
 		return s;
 	}
 
-	inline void relative (bool r) //relative from listener, default in absolute space
-{alSourcei (source, AL_SOURCE_RELATIVE, r ? AL_TRUE : AL_FALSE);
+	inline void relative (bool r) { //relative from listener, default in absolute space
+		alSourcei (source, AL_SOURCE_RELATIVE, r ? AL_TRUE : AL_FALSE);
 	}
 
-	inline void position (vector p) //set position in space
-	{alSourcefv (source, AL_POSITION, p.v);
+	inline void position (vector p) { //set position in space
+		alSourcefv (source, AL_POSITION, p.v);
 	}
 
-	inline void speed (vector s) //speed in space
-	{alSourcefv (source, AL_VELOCITY, s.v);
+	inline void speed (vector s) { //speed in space
+		alSourcefv (source, AL_VELOCITY, s.v);
 	}
 
-	inline void looping (bool l) //looping true/false
-{alSourcei (source, AL_LOOPING, l ? AL_TRUE : AL_FALSE);
+	inline void looping (bool l) { //looping true/false
+		alSourcei (source, AL_LOOPING, l ? AL_TRUE : AL_FALSE);
 	}
 
-	inline void volume (float vol) //gain, 1 is normal, 0 silence. >1 isn't always functional
-	{alSourcef (source, AL_GAIN, vol);
+	inline void volume (float vol) { //gain, 1 is normal, 0 silence. >1 isn't always functional
+		alSourcef (source, AL_GAIN, vol);
 	}
 
 	inline void pitch (float p) //1=normal speed, 2= +12 halftones, 0.5=-12 halftones
 	//HAS A BOORING LIMIT FROM OPENAL DEVS - [0.5 - 2] -- fix avail?
-	{alSourcef (source, AL_PITCH, p);
+	{
+		alSourcef (source, AL_PITCH, p);
 	}
 
 	void cone (vector orientation, float innerangle = 0, float outerangle = 0,
 	           float outervolume = 1);  //set CONE s<
 	void uncone();  //unset cone directions
-	inline void referencedist (float d) //reference distance
-	{alSourcef (source, AL_REFERENCE_DISTANCE, d);
+	inline void referencedist (float d) { //reference distance
+		alSourcef (source, AL_REFERENCE_DISTANCE, d);
 	}
-	inline void maxdist (float d) //maximal distance
-	{alSourcef (source, AL_MAX_DISTANCE, d);
+	inline void maxdist (float d) { //maximal distance
+		alSourcef (source, AL_MAX_DISTANCE, d);
 	}
-	inline void rolloff (float r) //rolloff factor
-	{alSourcef (source, AL_ROLLOFF_FACTOR, r);
+	inline void rolloff (float r) { //rolloff factor
+		alSourcef (source, AL_ROLLOFF_FACTOR, r);
 	}
 
 };
@@ -204,8 +195,7 @@ public:
 
 	exaSample();
 	exaSample (exaBuffer* b);
-	~exaSample()
-	{
+	~exaSample() {
 		destroy();
 	}
 	void setbuffer (exaBuffer* b);
@@ -228,8 +218,7 @@ public:
 #define EXA_STREAM_NOT_LOADED 0
 #define EXA_STREAM_OGG 1
 
-typedef struct
-{
+typedef struct {
 	FILE*file;
 	OggVorbis_File stream;
 	vorbis_info* info;
@@ -248,12 +237,10 @@ class exaStream : public exaSource
 	int format;
 	bool fillbuffer (ALuint buffer);
 public:
-	exaStream()
-	{
+	exaStream() {
 		type = EXA_STREAM_NOT_LOADED;
 	}
-	~exaStream()
-	{
+	~exaStream() {
 		if (type) unload();
 	}
 

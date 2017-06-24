@@ -13,8 +13,7 @@ public:
 	bool is_on_ground, forward, dead;
 	unsigned char red, green, blue;
 
-	bkBunny()
-	{
+	bkBunny() {
 		init();
 		dead = false;
 	}

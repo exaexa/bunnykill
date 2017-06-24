@@ -11,8 +11,7 @@ public:
 	orientation ori;
 	exaCamera()
 	{}
-	exaCamera (vector p, orientation o)
-	{
+	exaCamera (vector p, orientation o) {
 		pos = p;
 		ori = o;
 	}

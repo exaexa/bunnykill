@@ -26,7 +26,7 @@ static int keytypes[EXA_KEY_BUFFER_SIZE], nkeytypes = 0;
 
 int exaSetParams (int x, int y, int screenbpp, int depth, int stencil, int accum)
 {
-	if ( (x <= 0) || (y <= 0) || ( (screenbpp != 24) && (screenbpp != 32) ) ) return 1;
+	if ( (x <= 0) || (y <= 0) || ( (screenbpp != 24) && (screenbpp != 32))) return 1;
 	rx = x;
 	ry = y;
 	bpp = screenbpp;
@@ -49,13 +49,13 @@ bool exaInit()
 	if (isinit) return true; //suppose it's ok
 
 	if (SDL_Init (SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0) {
-		printf ("exaInit: SDL_Init failed: %s\n", SDL_GetError() );
+		printf ("exaInit: SDL_Init failed: %s\n", SDL_GetError());
 		return false;
 	}
 
 	videoinfo = SDL_GetVideoInfo();
 	if (!videoinfo) {
-		printf ("exaInit: SDL_GetVideoInfo failed: %s\n", SDL_GetError() );
+		printf ("exaInit: SDL_GetVideoInfo failed: %s\n", SDL_GetError());
 		return false;
 	}
 
@@ -77,7 +77,7 @@ bool exaInit()
 
 	surface = SDL_SetVideoMode (rx, ry, bpp, vidflags);
 	if (!surface) {
-		printf ("exaInit: SDL_SetVideoMode failed: %s\n", SDL_GetError() );
+		printf ("exaInit: SDL_SetVideoMode failed: %s\n", SDL_GetError());
 		return false;
 	}
 
@@ -133,7 +133,7 @@ bool exaIsIconified()
 float exaGetUptime()
 {
 	if (!isinit) return false;
-	return 0.001f*SDL_GetTicks();
+	return 0.001f * SDL_GetTicks();
 }
 
 float exaGetElapsedTime()
@@ -149,7 +149,7 @@ float exaGetElapsedTime()
 void exaDelay (float secs)
 {
 	if (!isinit) return;
-	SDL_Delay ( (unsigned int) (secs*1000) );
+	SDL_Delay ( (unsigned int) (secs * 1000));
 	//WARNING. SDL_Delay consumes 100% cpu
 }
 
@@ -187,9 +187,9 @@ void _Keyup (SDL_keysym*k)
 {
 	int i;
 	if (nkeydowns <= 0) return;
-	for (i = 0; (i < nkeydowns) && ( (k->sym) != keydown[i]);++i); //find that key to i
-	keydown[i] = keydown[nkeydowns-1];
-	keytime[i] = keytime[nkeydowns-1];
+	for (i = 0; (i < nkeydowns) && ( (k->sym) != keydown[i]); ++i); //find that key to i
+	keydown[i] = keydown[nkeydowns - 1];
+	keytime[i] = keytime[nkeydowns - 1];
 	--nkeydowns;    //delete key for keydowns
 	return;
 }
@@ -201,7 +201,7 @@ void _UpdateTypedKeys()
 	float eltime = 0.001f * (t - lasttime);
 	lasttime = t;
 	int i;
-	for (i = 0;i < nkeydowns;++i) {
+	for (i = 0; i < nkeydowns; ++i) {
 		keytime[i] += eltime;
 		while (keytime[i] > typerepeat) {
 			if (nkeytypes < EXA_KEY_BUFFER_SIZE) {
@@ -228,10 +228,9 @@ void _ProcessMouse()
 	mousex += x;
 	mousey += y;
 	mbuttonhit = 0;
-	for (i = 0;i < 8;++i)  //bitwise process button hits
-	{
+	for (i = 0; i < 8; ++i) { //bitwise process button hits
 		mbuttonhit >>= 1;
-		if ( (b&1) && (! (mbuttondown&1) ) ) mbuttonhit |= 0x80;
+		if ( (b & 1) && (! (mbuttondown & 1))) mbuttonhit |= 0x80;
 		b >>= 1;
 		mbuttondown >>= 1;
 	}
@@ -241,7 +240,7 @@ void _ProcessMouse()
 
 void exaKeyRepeat (float delay, float repeat)
 {
-	if ( (repeat == 0) || (delay == 0) ) {
+	if ( (repeat == 0) || (delay == 0)) {
 		typerepeats = false;
 		return;
 	}
@@ -270,19 +269,19 @@ int exaGetKeyTypes (int**keys)
 
 bool exaIsKeyHit (int key)
 {
-	for (int i = 0;i < nkeyhits;++i) if (keyhit[i] == key) return true;
+	for (int i = 0; i < nkeyhits; ++i) if (keyhit[i] == key) return true;
 	return false;
 }
 
 bool exaIsKeyDown (int key)
 {
-	for (int i = 0;i < nkeydowns;++i) if (keydown[i] == key) return true;
+	for (int i = 0; i < nkeydowns; ++i) if (keydown[i] == key) return true;
 	return false;
 }
 
 bool exaIsKeyTyped (int key)
 {
-	for (int i = 0;i < nkeytypes;++i) if (keytypes[i] == key) return true;
+	for (int i = 0; i < nkeytypes; ++i) if (keytypes[i] == key) return true;
 	return false;
 }
 
@@ -325,7 +324,7 @@ bool exaUpdate()
 	if (typerepeats) _UpdateTypedKeys();
 	_ProcessMouse();
 
-	while (SDL_PollEvent (&event) ) {
+	while (SDL_PollEvent (&event)) {
 		switch (event.type) {
 		case SDL_ACTIVEEVENT:
 			if (event.active.gain == 0) {
@@ -378,18 +377,18 @@ char exaEKEY2char (int ekey, bool shift, bool capslock)
 		return ' ';
 	}
 
-	if ( (ekey >= 128) ) return ' ';
+	if ( (ekey >= 128)) return ' ';
 	//we do not support non-base-ascii chars..yet;)
 	if (ekey <= 32) return ekey;
 
 	//TODO -- possibly all in one string;)
 	//and maybe SDL has a function fir this
 
-	if (! (shift || capslock) ) return ekey;
+	if (! (shift || capslock)) return ekey;
 	//it's ok when we don't have sh/capslk
 
 	if (ekey >= 'a') if (ekey <= 'z') {
-			if (shift || capslock) return ekey -32;
+			if (shift || capslock) return ekey - 32;
 			else return (char) ekey;
 		} //chars
 
@@ -409,22 +408,21 @@ char exaEKEY2char (int ekey, bool shift, bool capslock)
 
 bool exaIsPrintableEKEY (int ekey)
 {
-	return ( (ekey >= 32) && (ekey < 127) ) || ( (ekey >= 256) && (ekey <= 270) );
+	return ( (ekey >= 32) && (ekey < 127)) || ( (ekey >= 256) && (ekey <= 270));
 }
 
 
 int exaGetKBChars (char* charbuf)
 {
 	int i;
-	for (i = 0;i < nkeyhits;++i)
+	for (i = 0; i < nkeyhits; ++i)
 		charbuf[i] = exaEKEY2char (keyhit[i]);
 	return nkeyhits;
 }
 
 #pragma pack(push,1)
 
-typedef struct
-{
+typedef struct {
 	unsigned short id;
 	unsigned int fileSize;
 	unsigned short reserved[2];
@@ -457,10 +455,10 @@ bool exaScreenshot (int*x, int*y, int*bytes, char**d, bool bgr)
 	glReadPixels (0, 0, rx, ry, GL_RGB, GL_UNSIGNED_BYTE, data);
 	if (bgr) {
 		char t;
-		for (int i = 0;i < rx*ry;++i) {
-			t = data[3*i];
-			data[3*i] = data[3*i+2];
-			data[3*i+2] = t;
+		for (int i = 0; i < rx * ry; ++i) {
+			t = data[3 * i];
+			data[3 * i] = data[3 * i + 2];
+			data[3 * i + 2] = t;
 		}
 	}
 #endif

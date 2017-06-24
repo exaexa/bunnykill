@@ -9,10 +9,10 @@ bool bkBunnyDrawerLoad()
 {
 	int x, y, b;
 	char*d;
-	if (!exaImageReadPNG ("data/tex/bunny.png", &x, &y, &b, &d) ) return false;
+	if (!exaImageReadPNG ("data/tex/bunny.png", &x, &y, &b, &d)) return false;
 	bunnytex = exaImageMakeGLTex (x, y, b, d);
 	exaImageFree (d);
-	if (!exaImageReadPNG ("data/tex/bunny-nocolor.png", &x, &y, &b, &d) )
+	if (!exaImageReadPNG ("data/tex/bunny-nocolor.png", &x, &y, &b, &d))
 		return false;
 	bunnytex2 = exaImageMakeGLTex (x, y, b, d);
 	exaImageFree (d);

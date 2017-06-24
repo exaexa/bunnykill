@@ -10,7 +10,7 @@ bool bkSky::init()
 {
 	int x, y, b;
 	char*d;
-	if (!exaImageReadPNG ("data/tex/cloud.png", &x, &y, &b, &d) ) {
+	if (!exaImageReadPNG ("data/tex/cloud.png", &x, &y, &b, &d)) {
 		printf ("couldn't load cloud\n");
 		return false;
 	}
@@ -49,7 +49,7 @@ void bkSky::draw()
 	glColor3ub (255, 255, 255);
 	glEnable (GL_TEXTURE_2D);
 	glBindTexture (GL_TEXTURE_2D, tex);
-	for (i = clouds.begin();i != clouds.end();++i) {
+	for (i = clouds.begin(); i != clouds.end(); ++i) {
 		glPushMatrix();
 		glTranslatef (i->x - pos, i->y - 0.25, 0);
 		glBegin (GL_QUADS);
@@ -71,14 +71,14 @@ void bkSky::draw()
 void bkSky::update (float time)
 {
 	list<complex>::iterator i;
-	for (i = clouds.begin();i != clouds.end();++i) {
-		if ( ( (i->x - pos) < -0.3) || ( (i->x - pos) > 1.3) ) {
+	for (i = clouds.begin(); i != clouds.end(); ++i) {
+		if ( ( (i->x - pos) < -0.3) || ( (i->x - pos) > 1.3)) {
 			clouds.erase (i);
 			--i;
 		}
 	}
 	if (clouds.size() < 8) //CLOUD COUNT!
-		if (! (random() % 128) )
-			clouds.push_back (complex (pos + (1.15), 0.1 + FRAND*0.3) );
+		if (! (random() % 128))
+			clouds.push_back (complex (pos + (1.15), 0.1 + FRAND * 0.3));
 }
 

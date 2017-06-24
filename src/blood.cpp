@@ -19,10 +19,10 @@ bool bkBloodInit()
 {
 	int x, y, b;
 	char*d;
-	if (!exaImageReadPNG ("data/tex/bloodsplat.png", &x, &y, &b, &d) ) return false;
+	if (!exaImageReadPNG ("data/tex/bloodsplat.png", &x, &y, &b, &d)) return false;
 	bloodtex = exaImageMakeGLTex (x, y, b, d);
 	exaImageFree (d);
-	if (!exaImageReadPNG ("data/tex/meat.png", &x, &y, &b, &d) ) return false;
+	if (!exaImageReadPNG ("data/tex/meat.png", &x, &y, &b, &d)) return false;
 	meattex = exaImageMakeGLTex (x, y, b, d);
 	exaImageFree (d);
 	return true;
@@ -47,7 +47,7 @@ void bkMeatPiece::draw()
 	glBindTexture (GL_TEXTURE_2D, meattex);
 	glTranslatef (pos.x, pos.y, 0);
 	glRotatef (rot, 0, 0, 1);
-	glColor4f (1, 1, 1, 2*timeout);
+	glColor4f (1, 1, 1, 2 * timeout);
 	glBegin (GL_QUADS);
 	glTexCoord2f (0, 0);
 	glVertex2f (-0.007, -0.007);
@@ -71,7 +71,7 @@ bool bkMeatPiece::update (float time)
 	else while (splattime > 0) {
 			splattime -= blood_splat_gen_rate;
 			bkBloodAddSplat (pos,
-			                 0.7* (spd + (complex (DFRAND, DFRAND) | 0.06) ) );
+			                 0.7 * (spd + (complex (DFRAND, DFRAND) | 0.06)));
 		}
 	if (timeout < 0) return false;
 	if (pos.y < 0) return false;
@@ -98,7 +98,7 @@ void bkBloodSplat::draw()
 	glTranslatef (pos.x, pos.y, 0);
 	glRotatef (rot, 0, 0, 1);
 	glScalef (size, size, 0);
-	glColor4f (1, 1, 1, 1 - (time / 5) );
+	glColor4f (1, 1, 1, 1 - (time / 5));
 	glBegin (GL_QUADS);
 	glTexCoord2f (0, 0);
 	glVertex2f (-0.005, -0.005);
@@ -132,25 +132,25 @@ void bkBloodUpdate (float time, float posdiff)
 
 	{
 		list<bkMeatPiece>::iterator i;
-		for (i = meat.begin();i != meat.end();)
-			if (! (i->update (time) ) ) meat.erase (i++);
+		for (i = meat.begin(); i != meat.end();)
+			if (! (i->update (time))) meat.erase (i++);
 			else ++i;
 	}
 	{
 		list<bkBloodSplat>::iterator i;
-		for (i = blood.begin();i != blood.end();)
-			if (! (i->update (time) ) ) blood.erase (i++);
+		for (i = blood.begin(); i != blood.end();)
+			if (! (i->update (time))) blood.erase (i++);
 			else ++i;
 	}
 
 	if (posdiff > 0) {
 		{
 			list<bkMeatPiece>::iterator i;
-			for (i = meat.begin();i != meat.end();++i) i->pos.x -= posdiff;
+			for (i = meat.begin(); i != meat.end(); ++i) i->pos.x -= posdiff;
 		}
 		{
 			list<bkBloodSplat>::iterator i;
-			for (i = blood.begin();i != blood.end();++i) i->pos.x -= posdiff;
+			for (i = blood.begin(); i != blood.end(); ++i) i->pos.x -= posdiff;
 		}
 	}
 }
@@ -165,11 +165,11 @@ void bkBloodDraw()
 {
 	{
 		list<bkBloodSplat>::iterator i;
-		for (i = blood.begin();i != blood.end();++i) i->draw();
+		for (i = blood.begin(); i != blood.end(); ++i) i->draw();
 	}
 	{
 		list<bkMeatPiece>::iterator i;
-		for (i = meat.begin();i != meat.end();++i) i->draw();
+		for (i = meat.begin(); i != meat.end(); ++i) i->draw();
 	}
 }
 
@@ -193,11 +193,11 @@ void bkMoveAllBlood (float d)
 {
 	{
 		list<bkBloodSplat>::iterator i;
-		for (i = blood.begin();i != blood.end();++i) i->pos.x += d;
+		for (i = blood.begin(); i != blood.end(); ++i) i->pos.x += d;
 	}
 	{
 		list<bkMeatPiece>::iterator i;
-		for (i = meat.begin();i != meat.end();++i) i->pos.x += d;
+		for (i = meat.begin(); i != meat.end(); ++i) i->pos.x += d;
 	}
 }
 

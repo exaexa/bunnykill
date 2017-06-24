@@ -12,8 +12,7 @@ class exaThread
 public:
 	SDL_Thread*t;
 
-	exaThread()
-	{
+	exaThread() {
 		t = NULL;
 	}
 
@@ -27,12 +26,10 @@ class exaMutex
 public:
 	SDL_mutex*m;
 
-	exaMutex()
-	{
+	exaMutex() {
 		m = NULL;
 	}
-	~exaMutex()
-	{
+	~exaMutex() {
 		if (m) release();
 	}
 
@@ -40,8 +37,7 @@ public:
 	void release();
 	bool lock ();
 	bool unlock();
-	bool isinit()
-	{
+	bool isinit() {
 		return m ? true : false;
 	}
 };

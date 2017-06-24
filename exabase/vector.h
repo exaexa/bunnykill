@@ -10,7 +10,7 @@ class vector
 {
 public:
 	union {
-		struct{
+		struct {
 			float x, y, z;
 		};
 		float v[3];
@@ -23,8 +23,7 @@ public:
 	vector (const vector &vec) : x (vec.x), y (vec.y), z (vec.z)
 	{}
 
-	const vector &operator= (const vector &vec)
-	{
+	const vector &operator= (const vector &vec) {
 		x = vec.x;
 		y = vec.y;
 		z = vec.z;
@@ -32,46 +31,38 @@ public:
 		return *this;
 	}
 
-	const bool operator== (const vector &vec) const
-	{
-		return ( (x == vec.x) && (y == vec.y) && (z == vec.z) );
+	const bool operator== (const vector &vec) const {
+		return ( (x == vec.x) && (y == vec.y) && (z == vec.z));
 	}
 
-	const bool operator!= (const vector &vec) const
-	{
+	const bool operator!= (const vector &vec) const {
 		return ! (*this == vec);
 	}
 
-	const vector operator+ (const vector &vec) const
-	{
+	const vector operator+ (const vector &vec) const {
 		return vector (x + vec.x, y + vec.y, z + vec.z);
 	}
 
-	const vector operator+() const
-	{
+	const vector operator+() const {
 		return vector (*this);
 	}
 
-	const vector& operator+= (const vector vec)
-	{
+	const vector& operator+= (const vector vec) {
 		x += vec.x;
 		y += vec.y;
 		z += vec.z;
 		return *this;
 	}
 
-	const vector operator- (const vector& vec) const
-	{
+	const vector operator- (const vector& vec) const {
 		return vector (x - vec.x, y - vec.y, z - vec.z);
 	}
 
-	const vector operator-() const
-	{
+	const vector operator-() const {
 		return vector (-x, -y, -z);
 	}
 
-	const vector &operator-= (const vector vec)
-	{
+	const vector &operator-= (const vector vec) {
 		x -= vec.x;
 		y -= vec.y;
 		z -= vec.z;
@@ -79,8 +70,7 @@ public:
 		return *this;
 	}
 
-	const vector &operator*= (const float &s)
-	{
+	const vector &operator*= (const float &s) {
 		x *= s;
 		y *= s;
 		z *= s;
@@ -88,8 +78,7 @@ public:
 		return *this;
 	}
 
-	const vector &operator/= (const float &s)
-	{
+	const vector &operator/= (const float &s) {
 		const float t = 1 / s;
 
 		x *= t;
@@ -99,86 +88,71 @@ public:
 		return *this;
 	}
 
-	const vector operator* (const float &s) const
-	{
-		return vector (x*s, y*s, z*s);
+	const vector operator* (const float &s) const {
+		return vector (x * s, y * s, z * s);
 	}
 
-	friend inline const vector operator* (const float &s, const vector &vec)
-	{
-		return vec*s;
+	friend inline const vector operator* (const float &s, const vector &vec) {
+		return vec * s;
 	}
 
-	const vector operator/ (float s) const
-	{
+	const vector operator/ (float s) const {
 		s = 1 / s;
 
-		return vector (s*x, s*y, s*z);
+		return vector (s * x, s * y, s * z);
 	}
 
-	const vector crossproduct (const vector &vec) const
-	{
-		return vector (y*vec.z - z*vec.y, z*vec.x - x*vec.z, x*vec.y - y*vec.x);
+	const vector crossproduct (const vector &vec) const {
+		return vector (y * vec.z - z * vec.y, z * vec.x - x * vec.z, x * vec.y - y * vec.x);
 	}
 
-	const vector operator^ (const vector &vec) const
-	{
-		return vector (y*vec.z - z*vec.y, z*vec.x - x*vec.z, x*vec.y - y*vec.x);
+	const vector operator^ (const vector &vec) const {
+		return vector (y * vec.z - z * vec.y, z * vec.x - x * vec.z, x * vec.y - y * vec.x);
 	}
 
-	const float dotproduct (const vector &vec) const
-	{
-		return x*vec.x + y*vec.y + z*vec.z;
+	const float dotproduct (const vector &vec) const {
+		return x * vec.x + y * vec.y + z * vec.z;
 	}
 
-	const float operator% (const vector &vec) const
-	{
-		return x*vec.x + y*vec.y + z*vec.z;
+	const float operator% (const vector &vec) const {
+		return x * vec.x + y * vec.y + z * vec.z;
 	}
 
 
-	const float length() const
-	{
-		return (float) sqrt ( (double) (x*x + y*y + z*z) );
+	const float length() const {
+		return (float) sqrt ( (double) (x * x + y * y + z * z));
 	}
 
-	const vector unitvector() const
-	{
+	const vector unitvector() const {
 		return (*this) / length();
 	}
 
-	void normalize()
-	{
+	void normalize() {
 		(*this) /= length();
 	}
 
-	const float operator!() const
-	{
-		return sqrtf (x*x + y*y + z*z);
+	const float operator!() const {
+		return sqrtf (x * x + y * y + z * z);
 	}
 
-	const vector operator | (const float length) const
-	{
+	const vector operator | (const float length) const {
 		if (length == 0) return vector (0, 0, 0);
 		register float x;
-		if ( (x = ! (*this) ) == 0) return vector (0, 0, 0);
-		return *this * (length / ! (*this) );
+		if ( (x = ! (*this)) == 0) return vector (0, 0, 0);
+		return *this * (length / ! (*this));
 	}
 
-	const vector& operator |= (const float length)
-	{
+	const vector& operator |= (const float length) {
 		return *this = *this | length;
 	}
 
-	inline const float angle (const vector& normal) const
-	{
+	inline const float angle (const vector& normal) const {
 		return acosf (*this % normal);
 	}
 
-	inline const vector reflection (const vector& normal) const
-	{
+	inline const vector reflection (const vector& normal) const {
 		const vector vec (*this | 1);
-		return (vec - normal * 2.0 * (vec % normal) ) * !*this;
+		return (vec - normal * 2.0 * (vec % normal)) * !*this;
 	}
 
 };

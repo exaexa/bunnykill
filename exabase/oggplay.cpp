@@ -18,10 +18,10 @@ int main (int argc, char**argv)
 
 	s.volume (0.5);
 
-	while (s.isplaying() || (s.tell() < s.length() ) ) {
+	while (s.isplaying() || (s.tell() < s.length())) {
 		exaUSleep (10000);
 		s.update();
-		if (!s.isplaying() ) s.play();
+		if (!s.isplaying()) s.play();
 	}
 
 	s.unload();

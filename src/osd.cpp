@@ -12,7 +12,7 @@ bool bkOSD::init()
 {
 	state = gsBanner;
 	ratio = anim = 0;
-	if (!font.loadfromfreetype ("data/VeraBd.ttf", 64) ) return false;
+	if (!font.loadfromfreetype ("data/VeraBd.ttf", 64)) return false;
 	messagetime = 0;
 	msgratio = 0;
 	msg = "";
@@ -38,7 +38,7 @@ void bkOSD::update (float time)
 		msg = "";
 	}
 	if (msg == shownmsg) {
-		if (msg.length() ) msgratio += 3 * time;
+		if (msg.length()) msgratio += 3 * time;
 		if (msgratio > 1) {
 			msgratio = 1;
 			messagetime -= 3 * time;
@@ -73,7 +73,7 @@ void bkOSD::draw()
 	switch (state) {
 
 	case gsScore:
-		glColor4f (0.5, 0.5, 0.5, 0.7*ratio);
+		glColor4f (0.5, 0.5, 0.5, 0.7 * ratio);
 		glPushMatrix();
 		glTranslatef (0, 0, 0);
 		glScalef (0.1, 0.1, 0);
@@ -82,7 +82,7 @@ void bkOSD::draw()
 		break;
 
 	case gsQuit:
-		glColor4f (1, 0.1, 0.0, 0.9*ratio);
+		glColor4f (1, 0.1, 0.0, 0.9 * ratio);
 		glPushMatrix();
 		glTranslatef (0.5, 0, 0);
 		glScalef (0.02, 0.02, 0);
@@ -92,23 +92,23 @@ void bkOSD::draw()
 		break;
 
 	case gsResult:
-		glColor4f (0, 0, 0, 0.7*ratio);
+		glColor4f (0, 0, 0, 0.7 * ratio);
 		glPushMatrix();
 		glTranslatef (0.2, -0.1, 0);
 		glScalef (0.06, 0.1, 0);
-		font.write ( ("Your score: " + itos (game.world.score) ).c_str() );
+		font.write ( ("Your score: " + itos (game.world.score)).c_str());
 		glPopMatrix();
 		break;
 
 	case gsBanner:
-		glColor4f (0.8, anim < 0.5 ? 2*anim : 2* (1 - anim), 0.1, ratio);
+		glColor4f (0.8, anim < 0.5 ? 2 * anim : 2 * (1 - anim), 0.1, ratio);
 		glPushMatrix();
 		glTranslatef (0.5, 0, 0);
 		glScalef (0.07, 0.2, 0);
 		glTranslatef (-font.getstrlen (str_banner) / 2, -0.5, 0);
 		font.write (str_banner);
 		glPopMatrix();
-		glColor4f (0.9, 0.9, 0.9, 0.7*ratio);
+		glColor4f (0.9, 0.9, 0.9, 0.7 * ratio);
 		glPushMatrix();
 		glTranslatef (0.5, -0.28, 0);
 		glScalef (0.04, 0.02, 0);
@@ -126,18 +126,18 @@ void bkOSD::draw()
 		glScalef (0.04, 0.02, 0);
 		glColor4f (1, 0.4, 0.2, 1);
 		font.write ( (" lives: " + itos (game.world.lives >= 0 ?
-		                                 game.world.lives : 0) ).c_str() );
+		                                 game.world.lives : 0)).c_str());
 		glPopMatrix();
 		glPushMatrix();
 		glTranslatef (0.33, 0, 0);
 		glScalef (0.04, 0.02, 0);
 		glColor4f (0.4, 1, 0.2, 1);
-		font.write ( (" score: " + itos (game.world.score) ).c_str() );
+		font.write ( (" score: " + itos (game.world.score)).c_str());
 		glPopMatrix();
 		glTranslatef (0.66, 0, 0);
 		glScalef (0.04, 0.02, 0);
 		glColor4f (0.4, 0.2, 1, 1);
-		font.write ( (" level: " + itos (game.world.level) ).c_str() );
+		font.write ( (" level: " + itos (game.world.level)).c_str());
 		glPopMatrix();
 		break;
 	}
@@ -146,9 +146,9 @@ void bkOSD::draw()
 		glPushMatrix();
 		glTranslatef (0.5, 0, 0);
 		glScalef (0.05, 0.05, 0);
-		glColor4f (0, 0, 0, msgratio*0.5);
-		glTranslatef (-font.getstrlen (shownmsg.c_str() ) / 2, 0, 0);
-		font.write (shownmsg.c_str() );
+		glColor4f (0, 0, 0, msgratio * 0.5);
+		glTranslatef (-font.getstrlen (shownmsg.c_str()) / 2, 0, 0);
+		font.write (shownmsg.c_str());
 		glPopMatrix();
 	}
 	glDisable (GL_BLEND);

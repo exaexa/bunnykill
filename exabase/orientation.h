@@ -13,58 +13,48 @@ class orientation
 {
 public:
 	vector fw, up;
-	orientation()
-	{
+	orientation() {
 		fw = vector (0, 0, -1);
 		up = vector (0, 1, 0);
 	}
-	orientation (const vector &forward, const vector &top)
-	{
+	orientation (const vector &forward, const vector &top) {
 		fw = forward;
 		up = top;
 	}
-	orientation (float fwx, float fwy, float fwz, float upx, float upy, float upz)
-	{
+	orientation (float fwx, float fwy, float fwz, float upx, float upy, float upz) {
 		fw = vector (fwx, fwy, fwz);
 		up = vector (upx, upy, upz);
 	}
 
-	void check()
-	{
+	void check() {
 		fw = fw.unitvector();
 		up = up.unitvector();
 	}
 
-	void checkangle() //keep angle of vectors!
-	{
+	void checkangle() { //keep angle of vectors!
 		check();
 		up = (fw ^ up) ^ fw;
 	}
 
-	inline const orientation checked() const
-	{
-		return orientation (fw.unitvector(), up.unitvector() );
+	inline const orientation checked() const {
+		return orientation (fw.unitvector(), up.unitvector());
 	}
 
-	const orientation& operator= (const orientation& ori)
-	{
+	const orientation& operator= (const orientation& ori) {
 		up = ori.up;
 		fw = ori.fw;
 		return *this;
 	}
 
-	const bool operator== (const orientation& ori) const
-	{
+	const bool operator== (const orientation& ori) const {
 		return (fw == ori.fw) && (up == ori.up);
 	}
 
-	const bool operator!= (const orientation& ori) const
-	{
+	const bool operator!= (const orientation& ori) const {
 		return ! (*this == ori);
 	}
 
-	const orientation operator+ (const rotation r) const
-	{
+	const orientation operator+ (const rotation r) const {
 		/*
 		 * following way:
 		 * 1- subtract plane distances from vectors
@@ -102,17 +92,15 @@ public:
 		return orientation (nfw, nup);
 	}
 
-	inline const vector right()
-	{
+	inline const vector right() {
 		return fw ^ up;
 	}
-	inline const vector left()
-	{
+	inline const vector left() {
 		return up ^ fw;
 	}
 
 	/* //TODO this one needs fixing - could be usuable later
-	 * 
+	 *
 	const rotation rotatefrom(const orientation& ori1) const
 	{
 		//FIXME doesn't work!
@@ -145,15 +133,13 @@ public:
 	*/
 
 #ifndef _EXA_ORIENTATION_OMIT_GL_
-	void glrotate() const
-	{
+	void glrotate() const {
 		float m[4][4];
 		glrotmatrix (m);
 		glMultMatrixf (&m[0][0]);
 	}
 
-	void glrotmatrix (float m[4][4]) const
-	{
+	void glrotmatrix (float m[4][4]) const {
 		vector side = fw ^ up;
 		m[0][0] = side.x;
 		m[0][1] = side.y;
@@ -175,44 +161,37 @@ public:
 
 #endif
 
-	const orientation operator- (const rotation& r) const
-	{
+	const orientation operator- (const rotation& r) const {
 		return *this + (-r);
 	}
 
 	//relates a vector to the orientation. +Z is FORWARD!
-	const vector relate (const vector& r) const
-	{
-		return vector (fw* (r.z) + up* (r.y) + (fw ^ up) * (r.x) );
+	const vector relate (const vector& r) const {
+		return vector (fw * (r.z) + up * (r.y) + (fw ^ up) * (r.x));
 	}
 
-	inline const orientation& operator+= (const rotation& r)
-	{
+	inline const orientation& operator+= (const rotation& r) {
 		*this = *this + r;
 		return *this;
 	}
 
-	inline const orientation& operator-= (const rotation& r)
-	{
+	inline const orientation& operator-= (const rotation& r) {
 		*this = *this + (-r);
 		return *this;
 	}
 
 	// -ori = rotate 180deg by the side axis
-	inline const orientation reverse() const
-	{
+	inline const orientation reverse() const {
 		return orientation (-fw, -up);
 	}
 
 	//!ori = "backwards" - rotate 180deg around vertical axis
-	inline const orientation backwards() const
-	{
+	inline const orientation backwards() const {
 		return orientation (-fw, up);
 	}
 
 	//^ori = "upside down" - rotate 180deg around "forward" axis
-	inline const orientation bottomup() const
-	{
+	inline const orientation bottomup() const {
 		return orientation (fw, -up);
 	}
 };

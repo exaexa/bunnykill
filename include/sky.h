@@ -19,8 +19,7 @@ public:
 
 	void draw();
 	void update (float time);
-	void set (float dest)
-	{
+	void set (float dest) {
 		pos = dest;
 	}
 };

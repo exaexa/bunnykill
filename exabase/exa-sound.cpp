@@ -12,7 +12,7 @@ void checkALError()
 	e = alGetError();
 	if (e) printf ("al error 0x%x \n", e);
 	e = alutGetError();
-	if (e) printf ("alut error 0x%x: %s\n", e, alutGetErrorString (e) );
+	if (e) printf ("alut error 0x%x: %s\n", e, alutGetErrorString (e));
 }
 
 bool exaSoundSystem::init()
@@ -20,7 +20,7 @@ bool exaSoundSystem::init()
 	if (isinit == true) return isinit;
 
 	if (alutInit (NULL, NULL) != AL_TRUE) {
-		printf ("error loading alut: %x \n", alutGetError() );
+		printf ("error loading alut: %x \n", alutGetError());
 		return false;
 	}
 	isinit = true;
@@ -52,8 +52,8 @@ exaStream* exaSoundSystem::createstream()
 void exaSoundSystem::listenerori (vector forward, vector top)
 {
 	float v[6];
-	memcpy (v, forward.v, sizeof (float) *3);
-	memcpy (v + 3, top.v, sizeof (float) *3);
+	memcpy (v, forward.v, sizeof (float) * 3);
+	memcpy (v + 3, top.v, sizeof (float) * 3);
 	alListenerfv (AL_ORIENTATION, v);
 }
 
@@ -71,7 +71,7 @@ void exaSoundSystem::adoptbuffer (exaBuffer* b)
 void exaSoundSystem::stopadopted()
 {
 	set<exaSample*>::iterator i = samples.begin();
-	while (i != samples.end() ) {
+	while (i != samples.end()) {
 		(*i)->stop();
 		i++;
 	}
@@ -80,8 +80,8 @@ void exaSoundSystem::stopadopted()
 void exaSoundSystem::updateadopted()
 {
 	set<exaSample*>::iterator i = samples.begin();
-	while (i != samples.end() ) {
-		if ( ( (*i)->isplaying() ) % 2) i++;
+	while (i != samples.end()) {
+		if ( ( (*i)->isplaying()) % 2) i++;
 		else {
 			(*i)->stop();
 			(*i)->destroy();
@@ -90,10 +90,10 @@ void exaSoundSystem::updateadopted()
 	}
 
 	set<exaBuffer*>::iterator j = buffers.begin();
-	while (j != buffers.end() ) {
-		if (alIsBuffer ( (*j)->buffer) )
-			alDeleteBuffers (1, & ( (*j)->buffer) );
-		if (!alIsBuffer ( (*j)->buffer) ) {
+	while (j != buffers.end()) {
+		if (alIsBuffer ( (*j)->buffer))
+			alDeleteBuffers (1, & ( (*j)->buffer));
+		if (!alIsBuffer ( (*j)->buffer)) {
 			//if can't be deleted then this one is still playing
 			(*j)->destroy();
 			buffers.erase (j);
@@ -199,7 +199,7 @@ exaSource::~exaSource()
 
 void exaSample::setbuffer (exaBuffer* b)
 {
-	alSourcei (source, AL_BUFFER, b->getalbuffer() );
+	alSourcei (source, AL_BUFFER, b->getalbuffer());
 }
 
 void exaSource::destroy()
@@ -246,8 +246,7 @@ bool exaStream::load (const char* fn, int t, int bufs, int bufn)
 
 
 	exaOGGDecoder* od;
-	if (t == 0) //guess type from file extension
-	{
+	if (t == 0) { //guess type from file extension
 		if (strlen (fn) < 3) return false;
 		if (strcasecmp (fn + (strlen (fn) - 3), "ogg") == 0) t = EXA_STREAM_OGG;
 		else t = EXA_STREAM_NOT_LOADED;
@@ -257,7 +256,7 @@ bool exaStream::load (const char* fn, int t, int bufs, int bufn)
 
 	case EXA_STREAM_OGG:
 
-		decdata = malloc (sizeof (exaOGGDecoder) );
+		decdata = malloc (sizeof (exaOGGDecoder));
 		od = (exaOGGDecoder*) decdata;
 		if (!od) return false;
 
@@ -267,7 +266,7 @@ bool exaStream::load (const char* fn, int t, int bufs, int bufn)
 			return false;
 		}
 
-		if (ov_open (od->file, & (od->stream), NULL, 0) ) {
+		if (ov_open (od->file, & (od->stream), NULL, 0)) {
 			fclose (od->file);
 			free (od);
 			return false;
@@ -290,9 +289,9 @@ bool exaStream::load (const char* fn, int t, int bufs, int bufn)
 	bufcount = bufn;
 	buffer = new exaBuffer[bufn];
 
-	for (i = 0;i < bufcount;++i) {
+	for (i = 0; i < bufcount; ++i) {
 		fillbuffer (buffer[i].buffer);
-		alSourceQueueBuffers (source, 1, & (buffer[i].buffer) );
+		alSourceQueueBuffers (source, 1, & (buffer[i].buffer));
 		nextbuf = 0;
 	}
 	return true;
@@ -312,14 +311,14 @@ void exaStream::update()
 	 * buffers yourself.
 	 */
 
-	for (i = 0;i < procd;++i) {
+	for (i = 0; i < procd; ++i) {
 		alSourceUnqueueBuffers (source, 1, &tbuf);
 	}
 
 	while (procd--) {
-		if (fillbuffer (buffer[nextbuf].buffer) ) {
-			alSourceQueueBuffers (source, 1, & (buffer[nextbuf].buffer) );
-			if (!isplaying() ) play(); //handle buffer underflows.
+		if (fillbuffer (buffer[nextbuf].buffer)) {
+			alSourceQueueBuffers (source, 1, & (buffer[nextbuf].buffer));
+			if (!isplaying()) play();  //handle buffer underflows.
 		}
 		++nextbuf;
 		if (nextbuf >= bufcount) nextbuf = 0;
@@ -374,11 +373,10 @@ bool exaStream::fillbuffer (ALuint buf)
 
 			if (result > 0)
 				size += result;
+			else if (result < 0)
+				return false;
 			else
-				if (result < 0)
-					return false;
-				else
-					break;
+				break;
 		}
 
 		if (size == 0) return false;
@@ -406,7 +404,7 @@ float exaStream::tell()
 {
 	switch (type) {
 	case EXA_STREAM_OGG:
-		return (float) ov_time_tell (& ( ( (exaOGGDecoder*) decdata)->stream) );
+		return (float) ov_time_tell (& ( ( (exaOGGDecoder*) decdata)->stream));
 	default:
 		return -1;
 	}

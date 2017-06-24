@@ -8,10 +8,9 @@
 #include <stdlib.h>
 
 
-static int enemy_val[] =
-    {
-        5, 6, 7, 25, 50, 100, 200
-    };
+static int enemy_val[] = {
+	5, 6, 7, 25, 50, 100, 200
+};
 #define ENEMYVAL(x) enemy_val[x]
 
 bkEnemy::bkEnemy (int t)
@@ -88,7 +87,7 @@ bool bkEnemy::update (float time)
 		break;
 	case 4:
 		if ( (bunny.pos.y - game.world.bunny.pos.y < 0) &&
-		        (fabs (bunny.pos.x - game.world.bunny.pos.x) < 0.04) ) {
+		     (fabs (bunny.pos.x - game.world.bunny.pos.x) < 0.04)) {
 			if (bunny.pos.x < game.world.bunny.pos.x)
 				left = true;
 			else right = true;
@@ -101,7 +100,7 @@ bool bkEnemy::update (float time)
 		break;
 	case 5:
 		if ( (bunny.pos.y - game.world.bunny.pos.y < 0) &&
-		        (fabs (bunny.pos.x - game.world.bunny.pos.x) < 0.04) ) {
+		     (fabs (bunny.pos.x - game.world.bunny.pos.x) < 0.04)) {
 			if (bunny.pos.x < game.world.bunny.pos.x)
 				left = true;
 			else right = true;
@@ -114,7 +113,7 @@ bool bkEnemy::update (float time)
 		break;
 	case 6:
 		if ( (bunny.pos.y - game.world.bunny.pos.y < 0) &&
-		        (fabs (bunny.pos.x - game.world.bunny.pos.x) < 0.04) ) {
+		     (fabs (bunny.pos.x - game.world.bunny.pos.x) < 0.04)) {
 			if (bunny.pos.x < game.world.bunny.pos.x)
 				left = true;
 			else right = true;
@@ -126,7 +125,7 @@ bool bkEnemy::update (float time)
 		}
 		break;
 	}
-	if (!bunny.update (time, right, left, jump ) ) return false;
+	if (!bunny.update (time, right, left, jump)) return false;
 	if (bunny.pos.x < -0.01) return false;
 	if (bunny.pos.y <= 0) return false;
 	return true;
@@ -138,13 +137,13 @@ void bkEnemyUpdate (float time, float move)
 {
 	list<bkEnemy>::iterator i;
 	bkBunny &p = game.world.bunny;
-	for (i = enemy.begin();i != enemy.end();) {
+	for (i = enemy.begin(); i != enemy.end();) {
 		bkBunnySolveCollision (p, i->bunny);
 		if (i->bunny.dead) {
 			game.world.score += ENEMYVAL (i->type);
 			++game.world.kombo;
 		}
-		if (!i->update (time) ) enemy.erase (i++);
+		if (!i->update (time)) enemy.erase (i++);
 		else ++i;
 	}
 
@@ -159,7 +158,7 @@ void bkEnemyUpdate (float time, float move)
 
 			//Every series of levels the
 			//enemy generator speeds up a little
-			gen += FRAND / (1 + (lev / 7) );
+			gen += FRAND / (1 + (lev / 7));
 
 			switch (lev % 7) {  //generate proper enemy types
 			case 0:
@@ -206,8 +205,7 @@ void bkEnemyUpdate (float time, float move)
 				else t = 6;
 				bkEnemy e (t);
 				enemy.push_back (e);
-			}
-		else specgen = 1;
+			} else specgen = 1;
 
 	} else gen = specgen = 1;
 }
@@ -215,7 +213,7 @@ void bkEnemyUpdate (float time, float move)
 void bkEnemyDraw()
 {
 	list<bkEnemy>::iterator i;
-	for (i = enemy.begin();i != enemy.end();++i)
+	for (i = enemy.begin(); i != enemy.end(); ++i)
 		i->draw();
 }
 
@@ -227,7 +225,7 @@ void bkEnemyReset()
 void bkMoveAllEnemies (float diff)
 {
 	list<bkEnemy>::iterator i;
-	for (i = enemy.begin();i != enemy.end();++i)
+	for (i = enemy.begin(); i != enemy.end(); ++i)
 		i->bunny.pos.x += diff;
 }
 

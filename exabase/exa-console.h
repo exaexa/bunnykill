@@ -13,8 +13,7 @@ public:
 	void EKEYinput (int ekey);
 	void charinput (char c);
 	void clear();
-	void clearcmdline()
-	{
+	void clearcmdline() {
 		cmdline = "";
 		curpos = 0;
 	}
@@ -27,17 +26,14 @@ public:
 	void init (unsigned short int scrollback, unsigned short int cmdqueuelen = 10);
 	void destroy();
 
-	void unscroll()
-	{
+	void unscroll() {
 		scroll = 0;
 	}
 
-	exaGLConsole()
-	{
+	exaGLConsole() {
 		isinit = false;
 	}
-	~exaGLConsole()
-	{
+	~exaGLConsole() {
 		if (isinit) destroy();
 	}
 

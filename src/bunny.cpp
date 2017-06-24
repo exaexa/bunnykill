@@ -49,7 +49,7 @@ bool bkBunny::update (float time, bool right, bool left, bool jump)
 	game.world.map.solvecol (*this);
 
 	if (is_on_ground) {
-		if ( (fabs (spd.x) <= 0.05) && !left && !right ) animstate = 0;
+		if ( (fabs (spd.x) <= 0.05) && !left && !right) animstate = 0;
 		else {
 			animtime += time;
 			if (animtime > 0.1) {
@@ -63,7 +63,7 @@ bool bkBunny::update (float time, bool right, bool left, bool jump)
 		else if (spd.y > 0) animstate = 4;
 		else {
 			animtime += time;
-			if ( (animstate < 6) || (animstate > 7) ) {
+			if ( (animstate < 6) || (animstate > 7)) {
 				animstate = 6;
 				animtime = 0;
 			}
@@ -91,10 +91,10 @@ void bkBunny::die()
 {
 	int i;
 	complex p = pos + complex (0, 0.0272);
-	for (i = 0;i < 10;++i) bkBloodAddMeat
-		(pos, complex (DFRAND, DFRAND) | (FRAND*FRAND) );
-	for (i = 0;i < 20;++i) bkBloodAddSplat
-		(pos, complex (0, 0.5) + 3*spd + complex (DFRAND, DFRAND) | (0.7*FRAND) );
+	for (i = 0; i < 10; ++i) bkBloodAddMeat
+		(pos, complex (DFRAND, DFRAND) | (FRAND * FRAND));
+	for (i = 0; i < 20; ++i) bkBloodAddSplat
+		(pos, complex (0, 0.5) + 3 * spd + complex (DFRAND, DFRAND) | (0.7 * FRAND));
 	dead = true;
 }
 
@@ -104,7 +104,7 @@ bool bkBunnySolveCollision (bkBunny& a, bkBunny& b)
 {
 	complex d = a.pos - b.pos;
 	float l;
-	if ( (l = d.length() ) >= 0.025) return false;
+	if ( (l = d.length()) >= 0.025) return false;
 	if (l < 0.0001) return false;
 	d = d.unit();
 
@@ -115,7 +115,7 @@ bool bkBunnySolveCollision (bkBunny& a, bkBunny& b)
 	a.spd += d;
 	b.spd -= d;
 
-	if (2*fabs (d.y) > fabs (d.x) ) { //die
+	if (2 * fabs (d.y) > fabs (d.x)) { //die
 		if (d.y > 0) {
 			b.die();
 			clamp_neg (a.spd.y);

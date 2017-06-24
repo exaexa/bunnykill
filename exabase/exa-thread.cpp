@@ -38,14 +38,14 @@ void exaMutex::release()
 bool exaMutex::lock ()
 {
 	if (!m) return false;
-	if (SDL_mutexP (m) ) return false;
+	if (SDL_mutexP (m)) return false;
 	return true;
 }
 
 bool exaMutex::unlock()
 {
 	if (!m) return false;
-	if (SDL_mutexV (m) ) return false;
+	if (SDL_mutexV (m)) return false;
 	return true;
 }
 

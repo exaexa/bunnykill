@@ -7,12 +7,12 @@
 
 int main()
 {
-	if (!exaSound.init() ) return 1;
+	if (!exaSound.init()) return 1;
 	exaBuffer* b = exaSound.createbuffer();
-	if (!b->loadfile ("bombpl.wav") ) printf ("Loading failed\n");
+	if (!b->loadfile ("bombpl.wav")) printf ("Loading failed\n");
 	exaSource* s = exaSound.createsample (b);
 	s->play();
-	while (s->isplaying() ) {
+	while (s->isplaying()) {
 		exaDelay (0.3f);
 	}
 	s->destroy();

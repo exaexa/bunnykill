@@ -52,13 +52,13 @@ bool exaSocket::close()
 
 bool exaSocket::bind (ipaddress ipa)
 {
-	if (::bind (sock, (exasockaddr*) ipa, sizeof (exasockaddr) ) ) return false;
+	if (::bind (sock, (exasockaddr*) ipa, sizeof (exasockaddr))) return false;
 	return true;
 }
 
 bool exaSocket::listen (unsigned int nconn)
 {
-	if (::listen (sock, nconn) ) return false;
+	if (::listen (sock, nconn)) return false;
 	return true;
 }
 
@@ -66,9 +66,9 @@ bool exaSocket::setblocking (bool block)
 {
 #ifdef WIN32
 	u_long m = block ? 0 : 1;
-	if (ioctlsocket (sock, FIONBIO, &m) ) return false;
+	if (ioctlsocket (sock, FIONBIO, &m)) return false;
 #else
-	if (fcntl (sock, F_SETFL, block ? 0 : O_NONBLOCK) ) return false;
+	if (fcntl (sock, F_SETFL, block ? 0 : O_NONBLOCK)) return false;
 #endif
 	return true;
 }
@@ -82,7 +82,7 @@ bool exaSocket::setbroadcast (bool b)
 #endif
 	opt = b ? 1 : 0;
 
-	if (!setsockopt (sock, SOL_SOCKET, SO_BROADCAST, &opt, sizeof (opt) ) )
+	if (!setsockopt (sock, SOL_SOCKET, SO_BROADCAST, &opt, sizeof (opt)))
 		return true;
 	else return false;
 }
@@ -93,9 +93,9 @@ bool exaSocket::settimeout (unsigned int timeout)
 	FD_ZERO (&set);
 	FD_SET (sock, &set);
 	timeval t = {
-	                timeout, 0
-	            };
-	if (select (1, &set, NULL, NULL, &t) ) return false;
+		timeout, 0
+	};
+	if (select (1, &set, NULL, NULL, &t)) return false;
 	return true;
 }
 
@@ -159,10 +159,10 @@ int exaSocket::sendto (char*buf, int len, ipaddress ipa)
 	int s = 0;
 	int t = 0;
 	if (len == 0) {
-		return ::sendto (sock, buf, len, 0, (exasockaddr*) ipa, sizeof (ipa) );
+		return ::sendto (sock, buf, len, 0, (exasockaddr*) ipa, sizeof (ipa));
 	}
 	while (s < len) {
-		t =::sendto (sock, buf + s, len - s, 0, (exasockaddr*) ipa, sizeof (ipa) );
+		t =::sendto (sock, buf + s, len - s, 0, (exasockaddr*) ipa, sizeof (ipa));
 		if (t <= 0) return -1;
 		s += t;
 	}
@@ -176,7 +176,7 @@ ipaddress exaSocket::gethostbyname (const char* name, uint16_t port)
 	he =::gethostbyname (name);
 	if (!he) return ipa;
 
-	ipa.sin_addr.s_addr = * ( (uint32_t *) * (he->h_addr_list) );
+	ipa.sin_addr.s_addr = * ( (uint32_t *) * (he->h_addr_list));
 	//the IP is already served in network byte order
 	return ipa;
 }
@@ -187,9 +187,9 @@ int gethostbyaddr (const ipaddress& ipa, char*buf, int buflen)
 	int s;
 	he =::gethostbyaddr ( (const char*) & ipa, sizeof (ipa), AF_INET);
 	if (!he) return 0;
-	if ( (s = strlen (he->h_name) ) >= buflen) {
+	if ( (s = strlen (he->h_name)) >= buflen) {
 		strncpy (buf, he->h_name, buflen);
-		buf[buflen-1] = 0;
+		buf[buflen - 1] = 0;
 		return buflen;
 	}
 	strcpy (buf, he->h_name);

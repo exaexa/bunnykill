@@ -39,6 +39,6 @@ public:
 #ifndef _BK_GAME_CPP
 extern
 #endif
-	bkGame game;
+bkGame game;
 
 #endif

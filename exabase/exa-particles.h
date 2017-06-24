@@ -19,15 +19,13 @@
 #endif
 
 
-struct exaParticle
-{
+struct exaParticle {
 	vector pos, spd, gravity;
 	float size, time, life, pointgravity, friction, rotfactor;
 	float r, g, b;
 };
 
-struct exaParticleComet
-{
+struct exaParticleComet {
 	vector pos, spd, gravity;
 	float time, life, pointgravity, friction;
 
@@ -53,12 +51,10 @@ class exaParticleSystem
 	float totaltime, zrotps;
 	void deactivateparticle (unsigned int a);
 public:
-	exaParticleSystem()
-	{
+	exaParticleSystem() {
 		p = NULL;
 	}
-	~exaParticleSystem()
-	{
+	~exaParticleSystem() {
 		if (p) release();
 	}
 	void init (unsigned int particlecount, float zrotationpersec = 0);
@@ -82,12 +78,10 @@ class exaParticleCometSystem
 
 	void deactivatecomet (unsigned int n);
 public:
-	exaParticleCometSystem()
-	{
+	exaParticleCometSystem() {
 		d = NULL;
 	}
-	~exaParticleCometSystem()
-	{
+	~exaParticleCometSystem() {
 		if (d) release();
 	}
 	void init (unsigned int numComets);

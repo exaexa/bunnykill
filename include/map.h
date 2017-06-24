@@ -11,8 +11,7 @@
 #include <deque>
 using std::deque;
 
-typedef struct
-{
+typedef struct {
 	complex pos;
 	complex size;
 }
