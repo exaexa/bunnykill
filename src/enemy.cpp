@@ -135,7 +135,7 @@ static float gen = 0, specgen = 0;
 
 void bkEnemyUpdate (float time, float move)
 {
-	list<bkEnemy>::iterator i;
+	list<bkEnemy>::iterator i, j;
 	bkBunny &p = game.world.bunny;
 	for (i = enemy.begin(); i != enemy.end();) {
 		bkBunnySolveCollision (p, i->bunny);
@@ -143,8 +143,17 @@ void bkEnemyUpdate (float time, float move)
 			game.world.score += ENEMYVAL (i->type);
 			++game.world.kombo;
 		}
-		if (!i->update (time)) enemy.erase (i++);
-		else ++i;
+
+		if (!i->update (time)) {
+			enemy.erase (i++);
+			continue;
+		}
+
+		//the enemy didn't die, check his collisions with other enemies
+		for (j = enemy.begin(); j != enemy.end(); ++j)
+			if (i != j)
+				bkBunnySolveCollision (i->bunny, j->bunny, false);
+		++i;
 	}
 
 	gen -= move;

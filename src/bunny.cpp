@@ -100,7 +100,7 @@ void bkBunny::die()
 
 #define clamp_neg(x) if(x<0)x=0
 
-bool bkBunnySolveCollision (bkBunny& a, bkBunny& b)
+bool bkBunnySolveCollision (bkBunny& a, bkBunny& b, bool killing)
 {
 	complex d = a.pos - b.pos;
 	float l;
@@ -117,13 +117,13 @@ bool bkBunnySolveCollision (bkBunny& a, bkBunny& b)
 
 	if (2 * fabs (d.y) > fabs (d.x)) { //die
 		if (d.y > 0) {
-			b.die();
+			if (killing) b.die();
 			clamp_neg (a.spd.y);
-			a.spd.y += jump_strength;
+			a.spd.y += jump_strength * (killing?.9:.1);
 		} else {
-			a.die();
+			if (killing) a.die();
 			clamp_neg (b.spd.y);
-			b.spd.y += jump_strength;
+			b.spd.y += jump_strength * (killing?.9:.1);
 		}
 	}
 

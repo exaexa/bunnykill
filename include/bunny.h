@@ -23,7 +23,7 @@ public:
 	bool update (float time, bool r, bool l, bool jump);
 	void draw();
 
-	friend bool bkBunnySolveCollision (bkBunny& a, bkBunny& b);
+	friend bool bkBunnySolveCollision (bkBunny& a, bkBunny& b, bool killing = true);
 };
 
 
